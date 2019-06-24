@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { View, StyleSheet, TextInput, Alert } from "react-native";
+import { View, StyleSheet, TextInput, Alert, AsyncStorage } from "react-native";
 import { withNavigation } from "react-navigation";
 
 // Internal Component
@@ -21,6 +21,7 @@ import { Loading } from "../components/Loading";
 
 import { saveInfo } from "../../utils/functionNative";
 import useInput from "../hooks/useInput";
+import { registerUser, connecteUser } from "../../api/auth";
 
 function Auth({ navigation }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -36,21 +37,56 @@ function Auth({ navigation }) {
   };
 
   // RECUP champs User and Try to Register
-  _signUp = async () => {};
+  _signUp = () => {
+    let user = {
+      email: email.value,
+      nickname: username.value,
+      password: password.value,
+      password_confirmation: password.value
+    };
 
-  // RECUP champs User and Try to Connect & Stock INfo to Storage
-  _signIn = async () => {
-    navigation.navigate("Home");
+    // for register in DB online
+
+    // registerUser(user)
+    //   .then(res => {
+    //     Alert.alert(
+    //       "Inscription réussi",
+    //       "Je t'invite à te connecter ",
+    //       [{ text: "OK" }]
+    //     );
+    //   })
+    //   .catch(err => {
+    //     alert("Error please retry");
+    //   });
   };
 
-  _stockInfoStorage = async userInfo => {
-    // stokage du token
-    const resStorage = await saveInfo(userInfo);
-    if (resStorage.data.success === false) {
-      alert(resStorage.data.errorMessage);
-      return false;
-    }
-    // Redirection
+  // RECUP champs User and Try to Connect & Stock INfo to Storage
+  _signIn = () => {
+    let user = {
+      username: username.value,
+      password: password.value
+    };
+
+    // for connect in DB online
+
+    // connecteUser(user)
+    // .then(async res => {
+    //   let data = {
+    //     email: res.data.user.email,
+    //     nickname: res.data.user.nickname,
+    //     uuid: res.data.user.uuid,
+    //     token: res.token,
+    //     firstname: res.data.user.firstname,
+    //     lastname: res.data.user.lastname
+    //   };
+    //   await AsyncStorage.setItem("infoUser", JSON.stringify(data));
+    //   navigation.navigate("Home");
+    // })
+    // .catch(err => {
+    //   alert("Error please retry");
+    //   console.log(err);
+    // });
+
     navigation.navigate("Home");
   };
 
