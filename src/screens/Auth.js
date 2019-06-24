@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { View, StyleSheet, TextInput, Alert } from "react-native";
+import { withNavigation } from "react-navigation";
 
 // Internal Component
 import {
@@ -19,42 +20,27 @@ import { Button, ButtonGroup } from "react-native-elements";
 import { Loading } from "../components/Loading";
 
 import { saveInfo } from "../../utils/functionNative";
+import useInput from "../hooks/useInput";
 
-class Auth extends React.Component {
-  state = {
-    user: {
-      email: "",
-      username: "",
-      password: ""
-    },
-    selectedIndex: 0
-  };
+function Auth({ navigation }) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  static navigationOptions = ({ navigation }) => ({
-    title: "Viens partager sur des sujets Communs",
-    headerTintColor: TEXT_HEADER,
-    headerStyle: {
-      backgroundColor: BACKGROUND_HEADER
-    }
-  });
-
-  componentDidMount() {
-    // this.props.navigation.navigate("Home");
-  }
+  // input Value
+  const username = useInput();
+  const email = useInput();
+  const password = useInput();
 
   // SWITCH INTO SIGNIN | SIGNUP
   _updateIndex = selectedIndex => {
-    this.setState({ selectedIndex });
+    setSelectedIndex(selectedIndex);
   };
 
-  //  UPDATE INFO of User
-  updateStateHandler = (key, value) => {
-    let { user } = this.state;
+  // RECUP champs User and Try to Register
+  _signUp = async () => {};
 
-    user[key] = value;
-    this.setState({
-      user
-    });
+  // RECUP champs User and Try to Connect & Stock INfo to Storage
+  _signIn = async () => {
+    navigation.navigate("Home");
   };
 
   _stockInfoStorage = async userInfo => {
@@ -65,56 +51,44 @@ class Auth extends React.Component {
       return false;
     }
     // Redirection
-    this.props.navigation.navigate("Home");
-  };
-
-  // RECUP champs User and Try to Register
-  _signUp = async () => {};
-
-  // RECUP champs User and Try to Connect & Stock INfo to Storage
-  _signIn = async () => {
-    this.props.navigation.navigate("Home");
+    navigation.navigate("Home");
   };
 
   // Regex for Check Email
-  _validateEmail(mail) {
+  _validateEmail = mail => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
       return true;
     }
     return false;
-  }
+  };
 
   // VIEW - For Connect
   connectionView = () => {
-    let { user } = this.state;
-
     return (
       <View style={{ marginTop: 200 }}>
         <TextInput
           style={styles.TextInput}
           placeholderTextColor={BUTTON_COLOR_ONE}
-          value={user.email}
+          {...username}
           placeholder="Username"
           autoCapitalize="none"
           autoCorrect={false}
-          onChangeText={val => this.updateStateHandler("email", val)}
         />
         <TextInput
           style={styles.TextInput}
           placeholderTextColor={BUTTON_COLOR_ONE}
-          value={user.password}
           placeholder="Password"
           autoCapitalize="none"
           textContentType="password"
           autoCorrect={false}
           secureTextEntry={true}
-          onChangeText={val => this.updateStateHandler("password", val)}
+          {...password}
         />
 
         <Button
-          onPress={() => this._signIn()}
+          onPress={() => _signIn()}
           buttonStyle={styles.Button}
-          disabled={!(user.email.length >= 6 && user.password.length >= 6)}
+          disabled={!(username.value.length >= 2 && password.value.length >= 4)}
           disabledStyle={styles.desabled}
           disabledTitleStyle={{ color: BUTTON_COLOR_ONE }}
           title="Se connecter"
@@ -129,54 +103,41 @@ class Auth extends React.Component {
 
   // VIEW - For Register
   registerView = () => {
-    let { user } = this.state;
     return (
       <View style={{ marginTop: 200 }}>
         <TextInput
           style={styles.TextInput}
           placeholderTextColor={BUTTON_COLOR_ONE}
-          value={user.email}
           placeholder="Email"
           autoCapitalize="none"
           textContentType="emailAddress"
-          onChangeText={val => this.updateStateHandler("email", val)}
+          {...email}
         />
         <TextInput
           style={styles.TextInput}
           placeholderTextColor={BUTTON_COLOR_ONE}
-          value={user.username}
           placeholder="Username"
           autoCapitalize="none"
           autoCorrect={false}
-          onChangeText={val => this.updateStateHandler("username", val)}
+          {...username}
         />
         <TextInput
           style={styles.TextInput}
           placeholderTextColor={BUTTON_COLOR_ONE}
-          value={user.password}
           placeholder="Password"
           secureTextEntry={true}
-          onChangeText={val => this.updateStateHandler("password", val)}
+          {...password}
         />
-        {/* <TextInput
-          style={styles.TextInput}
-          placeholderTextColor={BUTTON_COLOR_ONE}
-          value={user.confirmPassword}
-          placeholder="Confirmer le password"
-          secureTextEntry={false}
-          autoCorrect={false}
-          onChangeText={val => this.updateStateHandler("confirmPassword", val)}
-        /> */}
 
         <Button
-          onPress={() => this._signUp()}
+          onPress={() => _signUp()}
           buttonStyle={styles.Button}
           title="S'enregistrer"
           disabled={
             !(
-              user.username.length >= 1 &&
-              user.password.length >= 5 &&
-              this._validateEmail(user.email)
+              username.value.length >= 1 &&
+              password.value.length >= 4 &&
+              _validateEmail(email.value)
             )
           }
           disabledStyle={styles.desabled}
@@ -186,40 +147,36 @@ class Auth extends React.Component {
     );
   };
 
-  render() {
-    let { selectedIndex } = this.state;
-
-    return (
-      <Container>
-        <View style={{ position: "absolute", top: 70, alignItems: "center" }}>
-          <Title title="Tindees" style={{ color: BUTTON_COLOR_ONE }} />
-          <ButtonGroup
-            onPress={this._updateIndex}
-            selectedIndex={selectedIndex}
-            buttons={["Se Connecter", "S'inscrire"]}
-            containerStyle={{
-              height: 30,
-              width: 300,
-              marginTop: 100,
-              borderRadius: 5,
-              backgroundColor: BACKGROUND_BODY,
-              borderColor: BUTTON_COLOR_ONE
-            }}
-            selectedButtonStyle={[
-              {
-                backgroundColor: BUTTON_COLOR_ONE
-              }
-            ]}
-            selectedTextStyle={{
-              color: BACKGROUND_BODY
-            }}
-          />
-        </View>
-        {selectedIndex === 0 && this.connectionView()}
-        {selectedIndex === 1 && this.registerView()}
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <View style={{ position: "absolute", top: 70, alignItems: "center" }}>
+        <Title title="Tindees" style={{ color: BUTTON_COLOR_ONE }} />
+        <ButtonGroup
+          onPress={_updateIndex}
+          selectedIndex={selectedIndex}
+          buttons={["Se Connecter", "S'inscrire"]}
+          containerStyle={{
+            height: 30,
+            width: 300,
+            marginTop: 100,
+            borderRadius: 5,
+            backgroundColor: BACKGROUND_BODY,
+            borderColor: BUTTON_COLOR_ONE
+          }}
+          selectedButtonStyle={[
+            {
+              backgroundColor: BUTTON_COLOR_ONE
+            }
+          ]}
+          selectedTextStyle={{
+            color: BACKGROUND_BODY
+          }}
+        />
+      </View>
+      {selectedIndex === 0 && connectionView()}
+      {selectedIndex === 1 && registerView()}
+    </Container>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -248,4 +205,12 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Auth;
+Auth.navigationOptions = () => ({
+  title: "Partage sur des sujets Communs",
+  headerTintColor: TEXT_HEADER,
+  headerStyle: {
+    backgroundColor: BACKGROUND_HEADER
+  }
+});
+
+export default withNavigation(Auth);

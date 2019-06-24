@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   View,
@@ -12,6 +12,7 @@ import {
 
 // Libs Extenal
 import { Button, Overlay, Header } from "react-native-elements";
+import { withNavigation } from "react-navigation";
 
 // Internal Component
 import { BUTTON_COLOR_ONE } from "../../utils/colors";
@@ -20,52 +21,45 @@ import Title from "../components/Title";
 
 import { Loading } from "../components/Loading";
 
-class Trophy extends React.Component {
-  state = {
-    infoUser: "null"
-  };
+_noData = () => {
+  return <Title title="No data sorry " />;
+};
 
-  _noData = () => {
-    return <Title title="No data sorry " />;
-  };
+function Profil({ navigation }) {
+  const [infoUser, setInfoUser] = useState("null");
 
-  render() {
-    const { infoUser } = this.state;
-
-    if (infoUser === undefined) {
-      return <Loading />;
-    } else if (infoUser === null) {
-      return (
-        <View style={[styles.container, styles.containerView]}>
-          {this._noData()}
-        </View>
-      );
-    }
-
+  if (infoUser === undefined) {
+    return <Loading />;
+  } else if (infoUser === null) {
     return (
-      <>
-        <Header
-          backgroundColor={BUTTON_COLOR_ONE}
-          centerComponent={{
-            text: `Profil`,
-            style: { color: "#fff", fontWeight: "bold", fontSize: 20 }
-          }}
-          rightComponent={{
-            icon: "people",
-            color: "#fff",
-            onPress: () => {
-              this.props.navigation.navigate("SignedOut"), AsyncStorage.clear();
-            }
-          }}
-        />
-        <Container>
-          <Title title="Profil" />
-        </Container>
-      </>
+      <View style={[styles.container, styles.containerView]}>
+        {this._noData()}
+      </View>
     );
   }
+
+  return (
+    <>
+      <Header
+        backgroundColor={BUTTON_COLOR_ONE}
+        centerComponent={{
+          text: `Profil`,
+          style: { color: "#fff", fontWeight: "bold", fontSize: 20 }
+        }}
+        rightComponent={{
+          icon: "people",
+          color: "#fff",
+          onPress: () => {
+            navigation.navigate("SignedOut"), AsyncStorage.clear();
+          }
+        }}
+      />
+      <Container>
+        <Title title="Profil" />
+      </Container>
+    </>
+  );
 }
 
 const styles = StyleSheet.create({});
-
-export default Trophy;
+export default withNavigation(Profil);
