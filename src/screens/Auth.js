@@ -24,6 +24,8 @@ import useInput from "../hooks/useInput";
 import { registerUser, connecteUser } from "../../api/auth";
 
 function Auth({ navigation }) {
+  navigation.navigate("Home");
+
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   // input Value

@@ -18,8 +18,8 @@ export const BUTTON_COLOR_TWO = "#0e2f44";
 // plus claire
 export const BUTTON_COLOR_THREE = "#8aa0ae";
 
-// blueViolet color one :  #A5AEFF
-//  violet color two : #4E2161
-// rouge color three : #CC4121
-// vert color four : #6F9B45
-// jaune color five : #EAD13F
+export const BLUEVIOLET = "#A5AEFF";
+export const PURPLE = "#4E2161";
+export const RED = "#CC4121";
+export const GREEN = "#6F9B45";
+export const YELLOW = "#EAD13F";
