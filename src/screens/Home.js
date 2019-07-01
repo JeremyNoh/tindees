@@ -34,29 +34,29 @@ function Home({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [infoUser, setInfoUser] = useState(null);
   const [category, setCategory] = useState(null);
+
+  const getInfo = async () => {
+    const infoUserJson = await AsyncStorage.getItem("infoUser");
+    let infoUser = JSON.parse(infoUserJson);
+    setInfoUser(infoUser);
+
+    getAllCategory(infoUser.token)
+      .then(res => {
+        console.log("ok");
+        setCategory(res);
+      })
+      .catch(err => {
+        console.log("err fetch data ");
+
+        // console.log(err);
+        setCategory(null);
+      });
+  };
+
   useEffect(() => {
     //   ComponentDidMount
     if (firstInApp) {
-      AsyncStorage.getItem("infoUser").then(value => {
-        let info = JSON.parse(value);
-        setInfoUser(info);
-
-        console.log(info);
-        getAllCategory(info.token)
-          .then(res => {
-            console.log("res");
-
-            console.log(res);
-
-            // setCategory(res);
-          })
-          .catch(err => {
-            console.log("erre");
-
-            console.log(err);
-            setCategory(null);
-          });
-      });
+      getInfo();
       setFirstInApp(false);
     }
   });

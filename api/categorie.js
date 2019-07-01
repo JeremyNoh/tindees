@@ -11,9 +11,6 @@ export const getAllCategory = userToken => {
       }
     })
       .then(response => {
-        console.log(userToken);
-        console.log(response);
-
         return response.json();
       })
       .then(data => {
