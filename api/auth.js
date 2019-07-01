@@ -13,7 +13,7 @@ export const registerUser = user => {
         email: user.email,
         nickname: user.username,
         password: user.password,
-        password_confirmation: user.confirmPassword
+        password_confirmation: user.password_confirmation
       })
     })
       .then(response => {

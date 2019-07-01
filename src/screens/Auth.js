@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
-import { View, StyleSheet, TextInput, Alert, AsyncStorage } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Alert,
+  AsyncStorage,
+  ScrollView
+} from "react-native";
 import { withNavigation } from "react-navigation";
 
 // Internal Component
@@ -24,7 +31,7 @@ import useInput from "../hooks/useInput";
 import { registerUser, connecteUser } from "../../api/auth";
 
 function Auth({ navigation }) {
-  navigation.navigate("Home");
+  // navigation.navigate("Home");
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -49,17 +56,15 @@ function Auth({ navigation }) {
 
     // for register in DB online
 
-    // registerUser(user)
-    //   .then(res => {
-    //     Alert.alert(
-    //       "Inscription réussi",
-    //       "Je t'invite à te connecter ",
-    //       [{ text: "OK" }]
-    //     );
-    //   })
-    //   .catch(err => {
-    //     alert("Error please retry");
-    //   });
+    registerUser(user)
+      .then(res => {
+        Alert.alert("Inscription réussi", "Je t'invite à te connecter ", [
+          { text: "OK" }
+        ]);
+      })
+      .catch(err => {
+        alert("Error please retry");
+      });
   };
 
   // RECUP champs User and Try to Connect & Stock INfo to Storage
@@ -71,25 +76,25 @@ function Auth({ navigation }) {
 
     // for connect in DB online
 
-    // connecteUser(user)
-    // .then(async res => {
-    //   let data = {
-    //     email: res.data.user.email,
-    //     nickname: res.data.user.nickname,
-    //     uuid: res.data.user.uuid,
-    //     token: res.token,
-    //     firstname: res.data.user.firstname,
-    //     lastname: res.data.user.lastname
-    //   };
-    //   await AsyncStorage.setItem("infoUser", JSON.stringify(data));
-    //   navigation.navigate("Home");
-    // })
-    // .catch(err => {
-    //   alert("Error please retry");
-    //   console.log(err);
-    // });
+    connecteUser(user)
+      .then(async res => {
+        let data = {
+          email: res.data.user.email,
+          nickname: username.value,
+          uuid: res.data.user.uuid,
+          token: res.token,
+          firstname: res.data.user.firstname,
+          lastname: res.data.user.lastname
+        };
+        await AsyncStorage.setItem("infoUser", JSON.stringify(data));
+        navigation.navigate("Home");
+      })
+      .catch(err => {
+        alert("Error please retry");
+        console.log(err);
+      });
 
-    navigation.navigate("Home");
+    // navigation.navigate("Home");
   };
 
   // Regex for Check Email
@@ -107,8 +112,8 @@ function Auth({ navigation }) {
         <TextInput
           style={styles.TextInput}
           placeholderTextColor={BUTTON_COLOR_ONE}
-          {...username}
-          placeholder="Username"
+          {...email}
+          placeholder="Email"
           autoCapitalize="none"
           autoCorrect={false}
         />
@@ -126,7 +131,7 @@ function Auth({ navigation }) {
         <Button
           onPress={() => _signIn()}
           buttonStyle={styles.Button}
-          disabled={!(username.value.length >= 2 && password.value.length >= 4)}
+          disabled={!(email.value.length >= 2 && password.value.length >= 4)}
           disabledStyle={styles.desabled}
           disabledTitleStyle={{ color: BUTTON_COLOR_ONE }}
           title="Se connecter"
@@ -142,31 +147,32 @@ function Auth({ navigation }) {
   // VIEW - For Register
   registerView = () => {
     return (
-      <View style={{ marginTop: 200 }}>
-        <TextInput
-          style={styles.TextInput}
-          placeholderTextColor={BUTTON_COLOR_ONE}
-          placeholder="Email"
-          autoCapitalize="none"
-          textContentType="emailAddress"
-          {...email}
-        />
-        <TextInput
-          style={styles.TextInput}
-          placeholderTextColor={BUTTON_COLOR_ONE}
-          placeholder="Username"
-          autoCapitalize="none"
-          autoCorrect={false}
-          {...username}
-        />
-        <TextInput
-          style={styles.TextInput}
-          placeholderTextColor={BUTTON_COLOR_ONE}
-          placeholder="Password"
-          secureTextEntry={true}
-          {...password}
-        />
-
+      <View style={{ marginTop: 100, height: 350 }}>
+        <ScrollView style={{ height: "100%" }}>
+          <TextInput
+            style={styles.TextInput}
+            placeholderTextColor={BUTTON_COLOR_ONE}
+            placeholder="Email"
+            autoCapitalize="none"
+            textContentType="emailAddress"
+            {...email}
+          />
+          <TextInput
+            style={styles.TextInput}
+            placeholderTextColor={BUTTON_COLOR_ONE}
+            placeholder="Username"
+            autoCapitalize="none"
+            autoCorrect={false}
+            {...username}
+          />
+          <TextInput
+            style={styles.TextInput}
+            placeholderTextColor={BUTTON_COLOR_ONE}
+            placeholder="Password"
+            secureTextEntry={true}
+            {...password}
+          />
+        </ScrollView>
         <Button
           onPress={() => _signUp()}
           buttonStyle={styles.Button}

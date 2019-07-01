@@ -54,3 +54,15 @@ export const getInfoUser = (userToken, idPlayer) => {
       });
   });
 };
+
+// export const getInfoUser = async (userToken, idPlayer) => {
+//     const response = await fetch(BASE_URL + PROFIL + idPlayer, {
+//       method: "GET",
+//       headers: {
+//         Accept: "application/json",
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${userToken}`
+//       }
+//     });
+//     return response.json();
+// };
