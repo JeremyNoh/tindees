@@ -70,9 +70,12 @@ function Auth({ navigation }) {
   // RECUP champs User and Try to Connect & Stock INfo to Storage
   _signIn = () => {
     let user = {
-      username: username.value,
+      email: email.value,
       password: password.value
     };
+
+    user.email = "jeremy@gmail.com";
+    user.password = "Azert12345";
 
     // for connect in DB online
 
@@ -84,14 +87,18 @@ function Auth({ navigation }) {
           uuid: res.data.user.uuid,
           token: res.token,
           firstname: res.data.user.firstname,
-          lastname: res.data.user.lastname
+          lastname: res.data.user.lastname,
+          type: res.data.user.type,
+          birthdate: res.data.user.birthdate,
+          city: res.data.user.city,
+          country: res.data.user.country,
+          zipCode: res.data.user.zipCode
         };
         await AsyncStorage.setItem("infoUser", JSON.stringify(data));
         navigation.navigate("Home");
       })
       .catch(err => {
-        alert("Error please retry");
-        console.log(err);
+        alert(err);
       });
 
     // navigation.navigate("Home");

@@ -41,14 +41,14 @@ export const connecteUser = user => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        username: user.username,
+        email: user.email,
         password: user.password
       })
     })
       .then(response => {
-        // if (!response.ok) {
-        //   reject("erreur");
-        // }
+        if (!response.ok) {
+          reject("l'email ou le Mot de Passe est Incorrect");
+        }
         return response.json();
       })
       .then(data => {
