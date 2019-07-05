@@ -49,6 +49,36 @@ export const addEvent = ({
   });
 };
 
+export const deleteEvent = ({ event_id, uuid, token }) => {
+  return new Promise((resolve, reject) => {
+    fetch(BASE_URL + EVENT + MY_EVENT, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        event_id,
+        uuid
+      })
+    })
+      .then(response => {
+        // if (!response.ok) {
+        //   reject("erreur");
+        // }
+        return response.json();
+      })
+      .then(data => {
+        resolve(data);
+      })
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
+  });
+};
+
 export const joinEvent = ({ event_id, uuid, token }) => {
   return new Promise((resolve, reject) => {
     fetch(BASE_URL + EVENT + MY_EVENT, {

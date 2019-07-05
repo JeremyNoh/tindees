@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
-  Text
+  Text,
+  RefreshControl
 } from "react-native";
 
 // Libs Extenal
@@ -37,23 +38,6 @@ import { addEvent, getMyEvents, getEvents } from "../../api/event";
 import DatePicker from "react-native-datepicker";
 import Select from "react-native-select-plus";
 
-const items = [
-  { key: 22, label: "Red Apples" },
-  { key: 33, label: "Cherries" },
-  { key: 44, label: "Cranberries" },
-  { key: 54, label: "Pink Grapefruit" },
-  { key: 60, label: "Raspberries" },
-  { key: 87, label: "Beets" },
-  { key: 9, label: "Red Peppers" },
-  { key: 10, label: "Radishes" },
-  { key: 11, label: "Radicchio" },
-  { key: 12, label: "Red Onions" },
-  { key: 13, label: "Red Potatoes" },
-  { key: 14, label: "Rhubarb" },
-  { key: 15, label: "Tomatoes" }
-];
-const Mock = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
 const addEventFunc = (setModalVisible, infoEvent) => {
   addEvent(infoEvent)
     .then(res => {
@@ -75,6 +59,9 @@ function Home({ navigation }) {
   const [infoUser, setInfoUser] = useState(null);
   const [category, setCategory] = useState(null);
   const [InfoEventSelect, setInfoEventSelect] = useState(null);
+
+  // for Refresh List
+  const [Refreshing, setRefreshing] = useState(false);
   // For ALL EVENT
   const [AllEvent, setAllEvent] = useState(undefined);
 
@@ -127,6 +114,7 @@ function Home({ navigation }) {
     getEvents(infoUser.token, infoUser.uuid)
       .then(res => {
         setAllEvent(res.data);
+        setRefreshing(false);
       })
       .catch(err => {});
   };
@@ -143,6 +131,11 @@ function Home({ navigation }) {
   // SWITCH INTO FUTURE EVENT | MY EVENT
   _updateIndex = selectedIndex => {
     setSelectedIndex(selectedIndex);
+  };
+
+  _onRefresh = () => {
+    setRefreshing(true);
+    getInfoEvents();
   };
 
   const modalAddEvent = () => {
@@ -365,6 +358,8 @@ function Home({ navigation }) {
             event={InfoEventSelect}
             uuid={infoUser.uuid}
             token={infoUser.token}
+            isRegistered={selectedIndex === 0 ? false : true}
+            refreshing={setRefreshing}
           />
         )}
         <ButtonGroup
@@ -399,7 +394,12 @@ function Home({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={{ height: "100%" }}>
+      <ScrollView
+        style={{ height: "100%" }}
+        refreshControl={
+          <RefreshControl refreshing={Refreshing} onRefresh={_onRefresh} />
+        }
+      >
         {selectedIndex === 0
           ? AllEvent &&
             AllEvent.map((element, index) => {
@@ -421,6 +421,7 @@ function Home({ navigation }) {
                   key={index}
                   props={element}
                   onPress={() => {
+                    setInfoEventSelect(element);
                     setIsModalOpen(true);
                   }}
                 />
