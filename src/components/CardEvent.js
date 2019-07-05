@@ -4,7 +4,10 @@ import { View, StyleSheet, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 import { BLUEVIOLET, PURPLE, GREEN, YELLOW, RED } from "../../utils/colors";
 
-export const CardEvent = ({ props, onPress }) => {
+export const CardEvent = ({
+  props: { name, startDate, category, zipCode },
+  onPress
+}) => {
   return (
     <View
       style={{
@@ -27,7 +30,7 @@ export const CardEvent = ({ props, onPress }) => {
           friction={90}
           tension={100}
           activeScale={0.95}
-          title={"NomEvent".toUpperCase()}
+          title={name.toUpperCase()}
           linearGradientProps={{
             colors: ["grey", "grey"],
             start: [1, 0],
@@ -42,13 +45,13 @@ export const CardEvent = ({ props, onPress }) => {
           subtitle={
             <View>
               <View style={styles.subtitleView}>
-                <Text style={styles.ratingText}>10/19/31</Text>
-                <Text style={styles.ratingText}>Catégorie </Text>
+                <Text style={styles.ratingText}>{startDate}</Text>
+                <Text style={styles.ratingText}>{category} </Text>
               </View>
               <View style={styles.subtitleView}>
                 <Text style={styles.ratingText}>Collégien</Text>
-                <Text style={styles.ratingText}>10 👍 </Text>
-                <Text style={styles.ratingText}>77090</Text>
+                <Text style={styles.ratingText}>0 👍 </Text>
+                <Text style={styles.ratingText}>{zipCode}</Text>
               </View>
             </View>
           }

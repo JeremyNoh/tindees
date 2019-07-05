@@ -74,6 +74,12 @@ function Home({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [infoUser, setInfoUser] = useState(null);
   const [category, setCategory] = useState(null);
+  const [InfoEventSelect, setInfoEventSelect] = useState(null);
+  // For ALL EVENT
+  const [AllEvent, setAllEvent] = useState(undefined);
+
+  // For My EVENT
+  const [MyEvent, setMyEvent] = useState(undefined);
 
   // form for add Event
   const nameEvent = useInput();
@@ -112,25 +118,17 @@ function Home({ navigation }) {
 
     getMyEvents(infoUser.token, infoUser.uuid)
       .then(res => {
-        console.log("getMyEvents success");
-
-        // console.log(res);
+        setMyEvent(res.data);
       })
       .catch(err => {
-        console.log("getMyEvents fails ");
         console.log(err);
       });
 
     getEvents(infoUser.token, infoUser.uuid)
       .then(res => {
-        console.log("getEvents success");
-
-        // console.log(res);
+        setAllEvent(res.data);
       })
-      .catch(err => {
-        console.log("getEvents fails ");
-        console.log(err);
-      });
+      .catch(err => {});
   };
 
   useEffect(() => {
@@ -361,7 +359,14 @@ function Home({ navigation }) {
         style={{ alignItems: "center", flexDirection: "row", paddingLeft: 20 }}
       >
         {modalAddEvent()}
-        {isEventModalOpen && <ModalEvent isClose={setIsModalOpen} />}
+        {isEventModalOpen && (
+          <ModalEvent
+            isClose={setIsModalOpen}
+            event={InfoEventSelect}
+            uuid={infoUser.uuid}
+            token={infoUser.token}
+          />
+        )}
         <ButtonGroup
           onPress={_updateIndex}
           selectedIndex={selectedIndex}
@@ -395,17 +400,32 @@ function Home({ navigation }) {
       </View>
 
       <ScrollView style={{ height: "100%" }}>
-        {Mock.map((element, index) => {
-          return (
-            <CardEvent
-              key={index}
-              props={element}
-              onPress={() => {
-                setIsModalOpen(true);
-              }}
-            />
-          );
-        })}
+        {selectedIndex === 0
+          ? AllEvent &&
+            AllEvent.map((element, index) => {
+              return (
+                <CardEvent
+                  key={index}
+                  props={element}
+                  onPress={() => {
+                    setInfoEventSelect(element);
+                    setIsModalOpen(true);
+                  }}
+                />
+              );
+            })
+          : MyEvent &&
+            MyEvent.map((element, index) => {
+              return (
+                <CardEvent
+                  key={index}
+                  props={element}
+                  onPress={() => {
+                    setIsModalOpen(true);
+                  }}
+                />
+              );
+            })}
       </ScrollView>
     </>
   );
