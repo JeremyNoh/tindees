@@ -8,7 +8,8 @@ import {
   Image,
   TouchableOpacity,
   Modal,
-  TextInput
+  TextInput,
+  Text
 } from "react-native";
 
 // Libs Extenal
@@ -32,9 +33,25 @@ import { getAllCategory } from "../../api/categorie";
 import useInput from "../hooks/useInput";
 
 // for Add Event
-import { addEvent } from "../../api/event";
+import { addEvent, getMyEvents, getEvents } from "../../api/event";
 import DatePicker from "react-native-datepicker";
+import Select from "react-native-select-plus";
 
+const items = [
+  { key: 22, label: "Red Apples" },
+  { key: 33, label: "Cherries" },
+  { key: 44, label: "Cranberries" },
+  { key: 54, label: "Pink Grapefruit" },
+  { key: 60, label: "Raspberries" },
+  { key: 87, label: "Beets" },
+  { key: 9, label: "Red Peppers" },
+  { key: 10, label: "Radishes" },
+  { key: 11, label: "Radicchio" },
+  { key: 12, label: "Red Onions" },
+  { key: 13, label: "Red Potatoes" },
+  { key: 14, label: "Rhubarb" },
+  { key: 15, label: "Tomatoes" }
+];
 const Mock = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const addEventFunc = (setModalVisible, infoEvent) => {
@@ -43,6 +60,8 @@ const addEventFunc = (setModalVisible, infoEvent) => {
       console.log("good post event");
     })
     .catch(err => {
+      console.log(err);
+
       console.log("err post event");
     });
   setModalVisible(false);
@@ -59,24 +78,58 @@ function Home({ navigation }) {
   // form for add Event
   const nameEvent = useInput();
   const descEvent = useInput();
-  const [date, setDate] = useState("2016-05-15");
-  const [isDateVisible, setIsDateVisible] = useState(false);
+  const [AddInfoEvent, setAddInfoEvent] = useState({
+    startDate: new Date(),
+    endDate: new Date()
+  });
 
   const getInfo = async () => {
     const infoUserJson = await AsyncStorage.getItem("infoUser");
     let infoUser = JSON.parse(infoUserJson);
+
     setInfoUser(infoUser);
 
     getAllCategory(infoUser.token)
       .then(res => {
-        console.log("ok");
-        setCategory(res);
+        let categoryResult = [];
+        res.data.forEach(oneCategory => {
+          categoryResult.push({
+            key: oneCategory.id,
+            label: oneCategory.libelle
+          });
+        });
+
+        setCategory(categoryResult);
       })
       .catch(err => {
-        console.log("err fetch data ");
+        console.log(err);
+      });
+  };
 
-        // console.log(err);
-        setCategory(null);
+  const getInfoEvents = async () => {
+    const infoUserJson = await AsyncStorage.getItem("infoUser");
+    let infoUser = JSON.parse(infoUserJson);
+
+    getMyEvents(infoUser.token, infoUser.uuid)
+      .then(res => {
+        console.log("getMyEvents success");
+
+        // console.log(res);
+      })
+      .catch(err => {
+        console.log("getMyEvents fails ");
+        console.log(err);
+      });
+
+    getEvents(infoUser.token, infoUser.uuid)
+      .then(res => {
+        console.log("getEvents success");
+
+        // console.log(res);
+      })
+      .catch(err => {
+        console.log("getEvents fails ");
+        console.log(err);
       });
   };
 
@@ -84,6 +137,7 @@ function Home({ navigation }) {
     //   ComponentDidMount
     if (firstInApp) {
       getInfo();
+      getInfoEvents();
       setFirstInApp(false);
     }
   });
@@ -103,78 +157,170 @@ function Home({ navigation }) {
           Alert.alert("Modal has been closed.");
         }}
       >
-        <Container>
-          <View>
-            <Title title="Créer un Event" />
-            <TextInput
-              style={styles.TextInput}
-              placeholderTextColor={BUTTON_COLOR_ONE}
-              placeholder="nom de l'evenement"
-              autoCapitalize="none"
-              {...nameEvent}
-            />
-            <TextInput
-              style={[
-                styles.TextInput,
-                {
-                  height: styles.TextInput.height * 2,
-                  borderWidth: styles.TextInput.borderBottomWidth,
-                  borderColor: styles.TextInput.borderBottomColor
-                }
-              ]}
-              placeholderTextColor={BUTTON_COLOR_ONE}
-              placeholder="Description"
-              autoCapitalize="none"
-              multiline={true}
-              numberOfLines={4}
-              {...descEvent}
-            />
-            <DatePicker
-              date={date}
-              mode="datetime"
-              placeholder="select date"
-              format="YYYY-MM-DD"
-              minDate="2016-05-01"
-              style={{
-                width: 200,
+        <>
+          <Button
+            onPress={() => {
+              setModalVisible(false);
+            }}
+            buttonStyle={[
+              styles.Button,
+              {
+                marginHorizontal: 20,
+                height: 50,
+                backgroundColor: BACKGROUND_BODY,
                 borderWidth: 1,
-                borderColor: "#EDF0F2",
-                borderRadius: 6
-              }}
-              maxDate="2016-06-01"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: "absolute",
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: 36
-                }
-                // ... You can check the source to find the other keys.
-              }}
-              onDateChange={date => {
-                setDate({ date });
-              }}
-            />
+                borderColor: BUTTON_COLOR_ONE,
+                borderRadius: 5
+              }
+            ]}
+            title="Fermer"
+            titleStyle={{ color: "black" }}
+          />
 
-            <Button
-              onPress={() => {
-                addEventFunc(setModalVisible, {
-                  description: descEvent.value,
-                  name: nameEvent,
-                  uuid: infoUser.uuid,
-                  userToken: infoUser.userToken
-                });
-              }}
-              buttonStyle={styles.Button}
-              title="Ajouter"
-            />
-          </View>
-        </Container>
+          <Container>
+            <ScrollView>
+              <View>
+                <Title title="Créer un Event" />
+                <Select
+                  data={category}
+                  width={300}
+                  placeholder="Choisi ma Categorie"
+                  onSelect={(key, value) =>
+                    setAddInfoEvent({ ...AddInfoEvent, id_category: key })
+                  }
+                  search={true}
+                  style={[styles.TextInput, {}]}
+                />
+                <TextInput
+                  style={styles.TextInput}
+                  placeholderTextColor={BUTTON_COLOR_ONE}
+                  placeholder="nom de l'evenement"
+                  autoCapitalize="none"
+                  {...nameEvent}
+                />
+                <TextInput
+                  style={[
+                    styles.TextInput,
+                    {
+                      height: styles.TextInput.height * 2,
+                      borderWidth: styles.TextInput.borderBottomWidth,
+                      borderColor: styles.TextInput.borderBottomColor
+                    }
+                  ]}
+                  placeholderTextColor={BUTTON_COLOR_ONE}
+                  placeholder="Description"
+                  autoCapitalize="none"
+                  multiline={true}
+                  numberOfLines={4}
+                  {...descEvent}
+                />
+                <View style={{ marginTop: 10 }}>
+                  <Text style={styles.textPlaceholder}>
+                    Choisi le debut et la fin de l'event :
+                  </Text>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      marginTop: 5
+                    }}
+                  >
+                    <View style={{ marginRight: 20 }}>
+                      <DatePicker
+                        date={AddInfoEvent.startDate}
+                        mode="datetime"
+                        placeholder="Debut de l'event"
+                        minDate={new Date()}
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        is24Hour={true}
+                        style={{
+                          width: 140,
+                          borderWidth: 1,
+                          borderColor: "#EDF0F2",
+                          borderRadius: 6
+                        }}
+                        customStyles={{
+                          dateIcon: {
+                            position: "absolute",
+                            left: 0,
+                            top: 4,
+                            marginLeft: 0,
+                            height: 0,
+                            width: 0
+                          },
+                          dateInput: {
+                            marginLeft: 36
+                          },
+                          dateInput: {
+                            borderWidth: 0,
+                            borderBottomWidth: 0.5,
+                            borderColor: BUTTON_COLOR_ONE
+                          }
+                        }}
+                        onDateChange={date => {
+                          setAddInfoEvent({ ...AddInfoEvent, startDate: date });
+                        }}
+                      />
+                    </View>
+
+                    <View>
+                      <DatePicker
+                        date={AddInfoEvent.endDate}
+                        mode="datetime"
+                        placeholder="Fin de l'event"
+                        minDate={AddInfoEvent.startDate}
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        is24Hour={true}
+                        style={{
+                          width: 140,
+                          borderWidth: 1,
+                          borderColor: "#EDF0F2",
+                          borderRadius: 6
+                        }}
+                        customStyles={{
+                          dateIcon: {
+                            position: "absolute",
+                            left: 0,
+                            top: 4,
+                            marginLeft: 0,
+                            height: 0,
+                            width: 0
+                          },
+                          dateInput: {
+                            marginLeft: 36
+                          },
+                          dateInput: {
+                            borderWidth: 0,
+                            borderBottomWidth: 0.5,
+                            borderColor: BUTTON_COLOR_ONE
+                          }
+                        }}
+                        onDateChange={date => {
+                          setAddInfoEvent({ ...AddInfoEvent, endDate: date });
+                        }}
+                      />
+                    </View>
+                  </View>
+                </View>
+                <Button
+                  onPress={() => {
+                    addEventFunc(setModalVisible, {
+                      ...AddInfoEvent,
+                      description: descEvent.value,
+                      name: nameEvent.value,
+                      uuid: infoUser.uuid,
+                      token: infoUser.token
+                    });
+                  }}
+                  buttonStyle={styles.Button}
+                  title="Ajouter"
+                />
+              </View>
+            </ScrollView>
+          </Container>
+        </>
       </Modal>
     );
   };
@@ -281,6 +427,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 90,
     borderRadius: 5
+  },
+  textPlaceholder: {
+    color: BUTTON_COLOR_ONE
   }
 });
 

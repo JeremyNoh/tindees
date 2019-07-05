@@ -74,11 +74,6 @@ function Auth({ navigation }) {
       password: password.value
     };
 
-    user.email = "jeremy@gmail.com";
-    user.password = "Azert12345";
-
-    // for connect in DB online
-
     connecteUser(user)
       .then(async res => {
         let data = {
