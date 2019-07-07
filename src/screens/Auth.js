@@ -6,7 +6,8 @@ import {
   TextInput,
   Alert,
   AsyncStorage,
-  ScrollView
+  ScrollView,
+  Text
 } from "react-native";
 import { withNavigation } from "react-navigation";
 
@@ -27,16 +28,15 @@ import { Button, ButtonGroup } from "react-native-elements";
 
 import { Loading } from "../components/Loading";
 
-import { saveInfo } from "../../utils/functionNative";
 import useInput from "../hooks/useInput";
 import { registerUser, connecteUser } from "../../api/auth";
+import { arrayTypeUsers } from "../../utils/const";
 
-const type = ["Migrant", "Locaux"];
 function Auth({ navigation }) {
-  // navigation.navigate("Home");
-
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [TypeUser, setTypeUser] = useState(0);
+
+  const [country, setCountry] = useState();
 
   // input Value
   const username = useInput();
@@ -62,7 +62,7 @@ function Auth({ navigation }) {
       password_confirmation: password.value,
       lastname: lastname.value,
       firstname: firstname.value,
-      type: type[TypeUser]
+      type: arrayTypeUsers[TypeUser]
     };
 
     // for register in DB online
@@ -165,7 +165,7 @@ function Auth({ navigation }) {
           <ButtonGroup
             onPress={setTypeUser}
             selectedIndex={TypeUser}
-            buttons={type}
+            buttons={arrayTypeUsers}
             containerStyle={{
               height: 30,
               width: 300,

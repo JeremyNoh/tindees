@@ -10,7 +10,9 @@ import {
   Modal,
   TextInput,
   Text,
-  RefreshControl
+  RefreshControl,
+  ActivityIndicator,
+  Dimensions
 } from "react-native";
 
 // Libs Extenal
@@ -21,7 +23,8 @@ import { withNavigation } from "react-navigation";
 import {
   BUTTON_COLOR_ONE,
   BACKGROUND_BODY,
-  COLOR_TEXT
+  COLOR_TEXT,
+  PURPLE
 } from "../../utils/colors";
 import Container from "../components/Container";
 import Title from "../components/Title";
@@ -38,6 +41,7 @@ import { addEvent, getMyEvents, getEvents } from "../../api/event";
 import DatePicker from "react-native-datepicker";
 import Select from "react-native-select-plus";
 import { dateNow } from "../../utils/functionNative";
+const height = Dimensions.get("window").height;
 
 const addEventFunc = (setModalVisible, infoEvent) => {
   addEvent(infoEvent)
@@ -106,18 +110,22 @@ function Home({ navigation }) {
 
     getMyEvents(infoUser.token, infoUser.uuid)
       .then(res => {
-        setMyEvent(res.data);
+        res.data.length === 0 ? setMyEvent(null) : setMyEvent(res.data);
       })
       .catch(err => {
+        setMyEvent(null);
         console.log(err);
       });
 
     getEvents(infoUser.token, infoUser.uuid)
       .then(res => {
-        setAllEvent(res.data);
+        res.data.length === 0 ? setAllEvent(null) : setAllEvent(res.data);
         setRefreshing(false);
       })
-      .catch(err => {});
+      .catch(err => {
+        setAllEvent(null);
+        setRefreshing(false);
+      });
   };
 
   useEffect(() => {
@@ -317,6 +325,93 @@ function Home({ navigation }) {
     );
   };
 
+  const noDataView = () => {
+    return (
+      <View style={styles.alignElement}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          refreshControl={
+            <RefreshControl refreshing={Refreshing} onRefresh={_onRefresh} />
+          }
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
+          <View>
+            <Text>Pas d'event Refresh ou reviens plus tard</Text>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const loadingView = () => {
+    return (
+      <View style={styles.alignElement}>
+        <ActivityIndicator size="large" color={PURPLE} />
+      </View>
+    );
+  };
+
+  const rulesForShowContent = () => {
+    if (selectedIndex === 0) {
+      if (AllEvent === undefined) {
+        return loadingView();
+      } else if (AllEvent === null) {
+        return noDataView();
+      } else {
+        return (
+          <ScrollView
+            style={{ height: "100%" }}
+            refreshControl={
+              <RefreshControl refreshing={Refreshing} onRefresh={_onRefresh} />
+            }
+          >
+            {AllEvent.map((element, index) => {
+              return (
+                <CardEvent
+                  key={index}
+                  props={element}
+                  onPress={() => {
+                    setInfoEventSelect(element);
+                    setIsModalOpen(true);
+                  }}
+                />
+              );
+            })}
+          </ScrollView>
+        );
+      }
+    } else {
+      if (MyEvent === undefined) {
+        return loadingView();
+      } else if (MyEvent === null) {
+        return noDataView();
+      } else {
+        return (
+          <ScrollView
+            style={{ height: "100%" }}
+            refreshControl={
+              <RefreshControl refreshing={Refreshing} onRefresh={_onRefresh} />
+            }
+          >
+            {MyEvent.map((element, index) => {
+              return (
+                <CardEvent
+                  key={index}
+                  props={element}
+                  onPress={() => {
+                    setInfoEventSelect(element);
+                    setIsModalOpen(true);
+                  }}
+                />
+              );
+            })}
+          </ScrollView>
+        );
+      }
+    }
+  };
+
   return (
     <>
       <Header
@@ -395,40 +490,7 @@ function Home({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <ScrollView
-        style={{ height: "100%" }}
-        refreshControl={
-          <RefreshControl refreshing={Refreshing} onRefresh={_onRefresh} />
-        }
-      >
-        {selectedIndex === 0
-          ? AllEvent &&
-            AllEvent.map((element, index) => {
-              return (
-                <CardEvent
-                  key={index}
-                  props={element}
-                  onPress={() => {
-                    setInfoEventSelect(element);
-                    setIsModalOpen(true);
-                  }}
-                />
-              );
-            })
-          : MyEvent &&
-            MyEvent.map((element, index) => {
-              return (
-                <CardEvent
-                  key={index}
-                  props={element}
-                  onPress={() => {
-                    setInfoEventSelect(element);
-                    setIsModalOpen(true);
-                  }}
-                />
-              );
-            })}
-      </ScrollView>
+      {rulesForShowContent()}
     </>
   );
 }
@@ -452,6 +514,12 @@ const styles = StyleSheet.create({
   },
   textPlaceholder: {
     color: BUTTON_COLOR_ONE
+  },
+  alignElement: {
+    alignItems: "center",
+    alignContent: "center",
+    flex: 1,
+    justifyContent: "center"
   }
 });
 
