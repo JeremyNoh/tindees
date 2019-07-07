@@ -16,7 +16,8 @@ import {
   BUTTON_COLOR_ONE,
   COLOR_TEXT,
   TEXT_HEADER,
-  BACKGROUND_HEADER
+  BACKGROUND_HEADER,
+  GREEN
 } from "../../utils/colors";
 import Container from "../components/Container";
 import Title from "../components/Title";
@@ -30,28 +31,38 @@ import { saveInfo } from "../../utils/functionNative";
 import useInput from "../hooks/useInput";
 import { registerUser, connecteUser } from "../../api/auth";
 
+const type = ["Migrant", "Locaux"];
 function Auth({ navigation }) {
   // navigation.navigate("Home");
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [TypeUser, setTypeUser] = useState(0);
 
   // input Value
   const username = useInput();
   const email = useInput();
   const password = useInput();
+  const lastname = useInput();
+  const firstname = useInput();
 
   // SWITCH INTO SIGNIN | SIGNUP
   _updateIndex = selectedIndex => {
     setSelectedIndex(selectedIndex);
   };
 
+  // SWITCH INTO MIGRANT | LOCAUX
+  _updateType = selectedIndex => {
+    setTypeUser(selectedIndex);
+  };
   // RECUP champs User and Try to Register
   _signUp = () => {
     let user = {
       email: email.value,
-      nickname: username.value,
       password: password.value,
-      password_confirmation: password.value
+      password_confirmation: password.value,
+      lastname: lastname.value,
+      firstname: firstname.value,
+      type: type[TypeUser]
     };
 
     // for register in DB online
@@ -151,6 +162,26 @@ function Auth({ navigation }) {
     return (
       <View style={{ marginTop: 100, height: 350 }}>
         <ScrollView style={{ height: "100%" }}>
+          <ButtonGroup
+            onPress={setTypeUser}
+            selectedIndex={TypeUser}
+            buttons={type}
+            containerStyle={{
+              height: 30,
+              width: 300,
+              borderRadius: 20
+              // backgroundColor: GREEN,
+              // borderColor: COLOR_TEXT
+            }}
+            selectedButtonStyle={[
+              {
+                backgroundColor: GREEN
+              }
+            ]}
+            selectedTextStyle={{
+              color: "black"
+            }}
+          />
           <TextInput
             style={styles.TextInput}
             placeholderTextColor={BUTTON_COLOR_ONE}
@@ -162,17 +193,25 @@ function Auth({ navigation }) {
           <TextInput
             style={styles.TextInput}
             placeholderTextColor={BUTTON_COLOR_ONE}
-            placeholder="Username"
-            autoCapitalize="none"
-            autoCorrect={false}
-            {...username}
+            placeholder="Password"
+            secureTextEntry={true}
+            {...password}
           />
           <TextInput
             style={styles.TextInput}
             placeholderTextColor={BUTTON_COLOR_ONE}
-            placeholder="Password"
-            secureTextEntry={true}
-            {...password}
+            placeholder="Nom"
+            autoCapitalize="none"
+            autoCorrect={false}
+            {...lastname}
+          />
+          <TextInput
+            style={styles.TextInput}
+            placeholderTextColor={BUTTON_COLOR_ONE}
+            placeholder="Prenom"
+            autoCapitalize="none"
+            autoCorrect={false}
+            {...firstname}
           />
         </ScrollView>
         <Button
@@ -180,11 +219,7 @@ function Auth({ navigation }) {
           buttonStyle={styles.Button}
           title="S'enregistrer"
           disabled={
-            !(
-              username.value.length >= 1 &&
-              password.value.length >= 4 &&
-              _validateEmail(email.value)
-            )
+            !(password.value.length >= 4 && _validateEmail(email.value))
           }
           disabledStyle={styles.desabled}
           disabledTitleStyle={{ color: BUTTON_COLOR_ONE }}

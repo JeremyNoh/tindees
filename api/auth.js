@@ -11,9 +11,11 @@ export const registerUser = user => {
       },
       body: JSON.stringify({
         email: user.email,
-        nickname: user.username,
         password: user.password,
-        password_confirmation: user.password_confirmation
+        password_confirmation: user.password_confirmation,
+        lastname: user.lastname,
+        firstname: user.firstname,
+        type: user.type
       })
     })
       .then(response => {

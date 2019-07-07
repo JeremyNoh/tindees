@@ -37,6 +37,7 @@ import useInput from "../hooks/useInput";
 import { addEvent, getMyEvents, getEvents } from "../../api/event";
 import DatePicker from "react-native-datepicker";
 import Select from "react-native-select-plus";
+import { dateNow } from "../../utils/functionNative";
 
 const addEventFunc = (setModalVisible, infoEvent) => {
   addEvent(infoEvent)
@@ -72,8 +73,8 @@ function Home({ navigation }) {
   const nameEvent = useInput();
   const descEvent = useInput();
   const [AddInfoEvent, setAddInfoEvent] = useState({
-    startDate: new Date(),
-    endDate: new Date()
+    startDate: dateNow(),
+    endDate: dateNow()
   });
 
   const getInfo = async () => {
