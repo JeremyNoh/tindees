@@ -76,6 +76,9 @@ function Home({ navigation }) {
   // form for add Event
   const nameEvent = useInput();
   const descEvent = useInput();
+
+  const address = useInput();
+  const zip_code = useInput();
   const [AddInfoEvent, setAddInfoEvent] = useState({
     startDate: dateNow(),
     endDate: dateNow()
@@ -331,6 +334,22 @@ function Home({ navigation }) {
                     </View>
                   </View>
                 </View>
+                <TextInput
+                  style={styles.TextInput}
+                  placeholderTextColor={BUTTON_COLOR_ONE}
+                  placeholder="Adresse"
+                  dataDetectorTypes="address"
+                  {...address}
+                />
+                <TextInput
+                  style={styles.TextInput}
+                  placeholderTextColor={BUTTON_COLOR_ONE}
+                  placeholder="Code Postal"
+                  keyboardType="numeric"
+                  autoCorrect={false}
+                  maxLength={5}
+                  {...zip_code}
+                />
                 <Button
                   onPress={() => {
                     addEventFunc({
@@ -338,7 +357,9 @@ function Home({ navigation }) {
                       description: descEvent.value,
                       name: nameEvent.value,
                       uuid: infoUser.uuid,
-                      token: infoUser.token
+                      token: infoUser.token,
+                      address: address.value,
+                      zip_code: zip_code.value
                     });
                   }}
                   buttonStyle={styles.Button}

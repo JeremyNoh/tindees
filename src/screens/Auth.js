@@ -26,13 +26,12 @@ import Title from "../components/Title";
 // Libs Extenal
 import { Button, ButtonGroup } from "react-native-elements";
 
-import { Loading } from "../components/Loading";
-
 import useInput from "../hooks/useInput";
 import { registerUser, connecteUser } from "../../api/auth";
 import { arrayTypeUsers } from "../../utils/const";
 import { country } from "../../assets/country/country";
 import Select from "react-native-select-plus";
+import { AdressInput } from "../components/AdressInput";
 
 function Auth({ navigation }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -46,6 +45,8 @@ function Auth({ navigation }) {
   const password = useInput();
   const lastname = useInput();
   const firstname = useInput();
+  const address = useInput();
+  const zip_code = useInput();
 
   // SWITCH INTO SIGNIN | SIGNUP
   _updateIndex = selectedIndex => {
@@ -65,7 +66,9 @@ function Auth({ navigation }) {
       lastname: lastname.value || undefined,
       firstname: firstname.value || undefined,
       type: arrayTypeUsers[TypeUser],
-      country: Country
+      country: Country,
+      address: address.value || undefined,
+      zip_code: zip_code.value || undefined
     };
 
     // for register in DB online
@@ -102,7 +105,9 @@ function Auth({ navigation }) {
           city: res.data.user.city,
           country: res.data.user.country,
           zipCode: res.data.user.zipCode,
-          country: res.data.user.country
+          country: res.data.user.country,
+          address: res.data.user.address,
+          zip_code: res.data.user.zip_code
         };
         await AsyncStorage.setItem("infoUser", JSON.stringify(data));
         navigation.navigate("Home");
@@ -216,6 +221,22 @@ function Auth({ navigation }) {
             autoCapitalize="none"
             autoCorrect={false}
             {...firstname}
+          />
+          <TextInput
+            style={styles.TextInput}
+            placeholderTextColor={BUTTON_COLOR_ONE}
+            placeholder="Adresse"
+            dataDetectorTypes="address"
+            {...address}
+          />
+          <TextInput
+            style={styles.TextInput}
+            placeholderTextColor={BUTTON_COLOR_ONE}
+            placeholder="Code Postal"
+            keyboardType="numeric"
+            autoCorrect={false}
+            maxLength={5}
+            {...zip_code}
           />
           <Select
             data={country}
