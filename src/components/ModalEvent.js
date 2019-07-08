@@ -47,13 +47,13 @@ export const ModalEvent = ({
       token
     })
       .then(res => {
-        console.log("hahahaha");
-
         isClose(false);
         refreshing();
       })
       .catch(err => {
         alert("Error Something was wrong");
+        isClose(false);
+
         console.log(err);
       });
   };

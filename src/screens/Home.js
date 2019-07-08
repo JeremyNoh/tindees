@@ -509,7 +509,7 @@ function Home({ navigation }) {
             uuid={infoUser.uuid}
             token={infoUser.token}
             isRegistered={selectedIndex === 0 ? false : true}
-            refreshing={setRefreshing}
+            refreshing={_onRefresh}
           />
         )}
         <ButtonGroup
