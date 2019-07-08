@@ -18,6 +18,8 @@ import {
 // Libs Extenal
 import { Header, ButtonGroup, Button } from "react-native-elements";
 import { withNavigation } from "react-navigation";
+import DatePicker from "react-native-datepicker";
+import Select from "react-native-select-plus";
 
 // Internal Component
 import {
@@ -28,6 +30,7 @@ import {
 } from "../../utils/colors";
 import Container from "../components/Container";
 import Title from "../components/Title";
+import Loading from "../components/Loading";
 
 import CardEvent from "../components/CardEvent";
 import { ModalEvent } from "../components/ModalEvent";
@@ -38,31 +41,27 @@ import useInput from "../hooks/useInput";
 
 // for Add Event
 import { addEvent, getMyEvents, getEvents } from "../../api/event";
-import DatePicker from "react-native-datepicker";
-import Select from "react-native-select-plus";
 import { dateNow } from "../../utils/functionNative";
+import { typeUserLocaux } from "../../utils/const";
 const height = Dimensions.get("window").height;
 
-const addEventFunc = (setModalVisible, infoEvent) => {
-  addEvent(infoEvent)
-    .then(res => {
-      console.log("good post event");
-    })
-    .catch(err => {
-      console.log(err);
-
-      console.log("err post event");
-    });
-  setModalVisible(false);
-};
-
 function Home({ navigation }) {
+  // for settup ComponentDidMount()
   const [firstInApp, setFirstInApp] = useState(true);
+
+  // SWITCH INTO ALL and MY EVENT
   const [selectedIndex, setSelectedIndex] = useState(0);
+
   const [isEventModalOpen, setIsModalOpen] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  // infoUser AsyncStorag Store
   const [infoUser, setInfoUser] = useState(null);
+
+  // Category of the Events
   const [category, setCategory] = useState(null);
+
+  // Info when CLick on Event
   const [InfoEventSelect, setInfoEventSelect] = useState(null);
 
   // for Refresh List
@@ -81,10 +80,20 @@ function Home({ navigation }) {
     endDate: dateNow()
   });
 
+  useEffect(() => {
+    //   ComponentDidMount
+    if (firstInApp) {
+      getInfo();
+      getInfoEvents();
+      setFirstInApp(false);
+    }
+  });
+
+  // FUNC for load UserData and Category
   const getInfo = async () => {
     const infoUserJson = await AsyncStorage.getItem("infoUser");
     let infoUser = JSON.parse(infoUserJson);
-
+    console.log(infoUser);
     setInfoUser(infoUser);
 
     getAllCategory(infoUser.token)
@@ -104,6 +113,7 @@ function Home({ navigation }) {
       });
   };
 
+  // CALL API FOR ALL EVENTS + MY EVENT
   const getInfoEvents = async () => {
     const infoUserJson = await AsyncStorage.getItem("infoUser");
     let infoUser = JSON.parse(infoUserJson);
@@ -128,25 +138,28 @@ function Home({ navigation }) {
       });
   };
 
-  useEffect(() => {
-    //   ComponentDidMount
-    if (firstInApp) {
-      getInfo();
-      getInfoEvents();
-      setFirstInApp(false);
-    }
-  });
+  // CALL API FOR ADD EVENT
+  const addEventFunc = infoEvent => {
+    addEvent(infoEvent)
+      .then(res => {})
+      .catch(err => {
+        console.log(err);
+      });
+    setModalVisible(false);
+  };
 
   // SWITCH INTO FUTURE EVENT | MY EVENT
   _updateIndex = selectedIndex => {
     setSelectedIndex(selectedIndex);
   };
 
+  // RELOAD THE LIST
   _onRefresh = () => {
     setRefreshing(true);
     getInfoEvents();
   };
 
+  // VIEW -  FOR ADD EVENT
   const modalAddEvent = () => {
     return (
       <Modal
@@ -306,7 +319,7 @@ function Home({ navigation }) {
                 </View>
                 <Button
                   onPress={() => {
-                    addEventFunc(setModalVisible, {
+                    addEventFunc({
                       ...AddInfoEvent,
                       description: descEvent.value,
                       name: nameEvent.value,
@@ -352,6 +365,7 @@ function Home({ navigation }) {
     );
   };
 
+  // IMPORTANT !!!!  its the rules for the system of the Home
   const rulesForShowContent = () => {
     if (selectedIndex === 0) {
       if (AllEvent === undefined) {
@@ -412,6 +426,9 @@ function Home({ navigation }) {
     }
   };
 
+  if (infoUser === null) {
+    return loadingView();
+  }
   return (
     <>
       <Header
@@ -421,19 +438,21 @@ function Home({ navigation }) {
           style: { color: "#fff", fontWeight: "bold", fontSize: 20 }
         }}
         leftComponent={
-          <TouchableOpacity
-            onPress={() => {
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <Image
-              source={require("../../assets/addEventWhite.png")}
-              style={{
-                width: 35,
-                height: 35
+          infoUser.type === typeUserLocaux ? (
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(!modalVisible);
               }}
-            />
-          </TouchableOpacity>
+            >
+              <Image
+                source={require("../../assets/addEventWhite.png")}
+                style={{
+                  width: 35,
+                  height: 35
+                }}
+              />
+            </TouchableOpacity>
+          ) : null
         }
         rightComponent={{
           icon: "people",

@@ -6,12 +6,15 @@ import {
   ScrollView,
   View,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions,
+  Text
 } from "react-native";
 import Title from "./Title";
 import { Button } from "react-native-elements";
 import { joinEvent, deleteEvent } from "../../api/event";
 import { BUTTON_COLOR_ONE, BACKGROUND_BODY } from "../../utils/colors";
+const width = Dimensions.get("window").width;
 
 export const ModalEvent = ({
   event,
@@ -62,7 +65,7 @@ export const ModalEvent = ({
       overlayBackgroundColor="white"
       onBackdropPress={() => isClose(false)}
       height="auto"
-      width="auto"
+      width={width - 50}
     >
       <View>
         <TouchableOpacity
@@ -75,7 +78,13 @@ export const ModalEvent = ({
             style={{ width: 35, height: 35 }}
           />
         </TouchableOpacity>
-        <Title title={event.name} />
+        <View style={styles.alignElement}>
+          <Title
+            title={event.name}
+            style={{ fontSize: 30, marginBottom: 10 }}
+          />
+          <Text>{event.description}</Text>
+        </View>
         {isRegistered ? (
           <Button
             onPress={() => {
@@ -125,5 +134,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 90,
     borderRadius: 5
+  },
+  alignElement: {
+    alignItems: "center"
   }
 });

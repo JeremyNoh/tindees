@@ -9,14 +9,7 @@ export const registerUser = user => {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        email: user.email,
-        password: user.password,
-        password_confirmation: user.password_confirmation,
-        lastname: user.lastname,
-        firstname: user.firstname,
-        type: user.type
-      })
+      body: JSON.stringify(user)
     })
       .then(response => {
         if (!response.ok) {

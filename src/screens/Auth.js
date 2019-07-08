@@ -31,12 +31,14 @@ import { Loading } from "../components/Loading";
 import useInput from "../hooks/useInput";
 import { registerUser, connecteUser } from "../../api/auth";
 import { arrayTypeUsers } from "../../utils/const";
+import { country } from "../../assets/country/country";
+import Select from "react-native-select-plus";
 
 function Auth({ navigation }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [TypeUser, setTypeUser] = useState(0);
 
-  const [country, setCountry] = useState();
+  const [Country, setCountry] = useState();
 
   // input Value
   const username = useInput();
@@ -60,9 +62,10 @@ function Auth({ navigation }) {
       email: email.value,
       password: password.value,
       password_confirmation: password.value,
-      lastname: lastname.value,
-      firstname: firstname.value,
-      type: arrayTypeUsers[TypeUser]
+      lastname: lastname.value || undefined,
+      firstname: firstname.value || undefined,
+      type: arrayTypeUsers[TypeUser],
+      country: Country
     };
 
     // for register in DB online
@@ -98,7 +101,8 @@ function Auth({ navigation }) {
           birthdate: res.data.user.birthdate,
           city: res.data.user.city,
           country: res.data.user.country,
-          zipCode: res.data.user.zipCode
+          zipCode: res.data.user.zipCode,
+          country: res.data.user.country
         };
         await AsyncStorage.setItem("infoUser", JSON.stringify(data));
         navigation.navigate("Home");
@@ -212,6 +216,16 @@ function Auth({ navigation }) {
             autoCapitalize="none"
             autoCorrect={false}
             {...firstname}
+          />
+          <Select
+            data={country}
+            width={300}
+            placeholder="Pays d'Origine"
+            onSelect={(key, value) => {
+              setCountry(value);
+            }}
+            search={true}
+            style={[styles.TextInput, {}]}
           />
         </ScrollView>
         <Button
