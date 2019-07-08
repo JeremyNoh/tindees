@@ -164,7 +164,7 @@ function Auth({ navigation }) {
   // VIEW - For Register
   registerView = () => {
     return (
-      <View style={{ marginTop: 100, height: 350 }}>
+      <View style={{ marginTop: 150, height: 350 }}>
         <ScrollView style={{ height: "100%" }}>
           <ButtonGroup
             onPress={setTypeUser}

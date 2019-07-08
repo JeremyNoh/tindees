@@ -12,7 +12,8 @@ import {
   Text,
   RefreshControl,
   ActivityIndicator,
-  Dimensions
+  Dimensions,
+  Alert
 } from "react-native";
 
 // Libs Extenal
@@ -141,11 +142,26 @@ function Home({ navigation }) {
   // CALL API FOR ADD EVENT
   const addEventFunc = infoEvent => {
     addEvent(infoEvent)
-      .then(res => {})
+      .then(res => {
+        Alert.alert(
+          "Event Ajouté",
+          "des participants s'inscriront très bientôt ",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                getInfoEvents();
+                setModalVisible(false);
+              }
+            }
+          ],
+          { cancelable: false }
+        );
+      })
       .catch(err => {
+        setModalVisible(false);
         console.log(err);
       });
-    setModalVisible(false);
   };
 
   // SWITCH INTO FUTURE EVENT | MY EVENT
@@ -166,9 +182,7 @@ function Home({ navigation }) {
         animationType="slide"
         transparent={false}
         visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-        }}
+        onRequestClose={() => {}}
       >
         <>
           <Button
