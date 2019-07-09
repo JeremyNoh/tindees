@@ -4,10 +4,10 @@ import { View, StyleSheet, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 import { BLUEVIOLET, PURPLE, GREEN, YELLOW, RED } from "../../utils/colors";
 
-export const CardEvent = ({
-  props: { name, startDate, category, zipCode },
-  onPress
-}) => {
+export const CardEvent = ({ props, onPress }) => {
+  let { name, startDate, category, zip_code } = props;
+
+  let [day, hours] = startDate.split(" ");
   return (
     <View
       style={{
@@ -44,19 +44,25 @@ export const CardEvent = ({
           subtitleStyle={{ color: "white" }}
           subtitle={
             <View>
+              <View
+                style={{
+                  alignItems: "center",
+                  height: 3,
+                  borderRadius: 20,
+                  width: "100%",
+                  marginVertical: 10,
+                  backgroundColor: "white"
+                }}
+              />
               <View style={styles.subtitleView}>
-                <Text style={styles.ratingText}>{startDate}</Text>
-                <Text style={styles.ratingText}>{category} </Text>
+                <Text style={styles.ratingText}>{day}</Text>
+                <Text style={styles.ratingText}>{zip_code || 77090}</Text>
               </View>
-              <View style={styles.subtitleView}>
-                <Text style={styles.ratingText}>Collégien</Text>
-                <Text style={styles.ratingText}>0 👍 </Text>
-                <Text style={styles.ratingText}>{zipCode}</Text>
+              <View style={styles.alignElement}>
+                <Text style={styles.ratingText}>{category} </Text>
               </View>
             </View>
           }
-          chevronColor="white"
-          chevron
           containerStyle={{
             borderRadius: 10
           }}
@@ -85,6 +91,9 @@ const styles = StyleSheet.create({
     flex: 2,
     flexDirection: "row",
     justifyContent: "space-between"
+  },
+  alignElement: {
+    alignItems: "center"
   },
   ratingText: {
     fontWeight: "bold",

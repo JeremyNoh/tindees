@@ -7,9 +7,9 @@ export const addEvent = ({
   startDate,
   endDate,
   id_category,
-  zipCode,
   city,
-  adress,
+  address,
+  zip_code,
   uuid,
   token
 }) => {
@@ -27,9 +27,9 @@ export const addEvent = ({
         startDate,
         endDate,
         id_category,
-        zipCode: 77090,
+        zip_code,
         city: "CITY",
-        adress: "rue",
+        address,
         uuid
       })
     })
@@ -40,6 +40,9 @@ export const addEvent = ({
         return response.json();
       })
       .then(data => {
+        if (data.error) {
+          reject(data.error);
+        }
         resolve(data);
       })
       .catch(err => {
@@ -122,8 +125,8 @@ export const getEvents = (userToken, idUser) => {
         return response.json();
       })
       .then(data => {
-        if (data.error) {
-          reject(data.error);
+        if (data.err) {
+          reject(data.err);
         } else {
           resolve(data);
         }

@@ -11,7 +11,7 @@ import {
   Text
 } from "react-native";
 import Title from "./Title";
-import { Button, Card } from "react-native-elements";
+import { Button } from "react-native-elements";
 import { joinEvent, deleteEvent } from "../../api/event";
 import { BUTTON_COLOR_ONE, BACKGROUND_BODY } from "../../utils/colors";
 const width = Dimensions.get("window").width;
@@ -79,9 +79,13 @@ export const ModalEvent = ({
             style={{ width: 35, height: 35 }}
           />
         </TouchableOpacity>
-        <Card title={event.name}>
+        <View style={styles.alignElement}>
+          <Title
+            title={event.name}
+            style={{ fontSize: 30, marginBottom: 10 }}
+          />
           <Text>{event.description}</Text>
-        </Card>
+        </View>
         {isRegistered ? (
           <Button
             onPress={() => {

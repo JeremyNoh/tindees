@@ -144,11 +144,30 @@ function Home({ navigation }) {
 
   // CALL API FOR ADD EVENT
   const addEventFunc = infoEvent => {
+    if (
+      !infoEvent.id_category ||
+      infoEvent.name.length < 1 ||
+      infoEvent.address.length < 1 ||
+      infoEvent.zip_code.length !== 5
+    ) {
+      Alert.alert(
+        "Champs Incomplet",
+        "veuillez remplir tout les champs ",
+        [
+          {
+            text: "OK",
+            onPress: () => {}
+          }
+        ],
+        { cancelable: false }
+      );
+      return false;
+    }
     addEvent(infoEvent)
       .then(res => {
         Alert.alert(
           "Event Ajouté",
-          "des participants s'inscriront très bientôt ",
+          "des participants s'inscriront très bientôt",
           [
             {
               text: "OK",
@@ -534,7 +553,20 @@ function Home({ navigation }) {
         />
         <TouchableOpacity
           onPress={() => {
-            console.log("filter");
+            Alert.alert(
+              "Filtre non Disponible 😞",
+              "Cette Fonctionnalité n'est pas encore développer,  Stay Tuned pour la nouvelle mise à jour",
+              [
+                {
+                  text: "OK",
+                  onPress: () => {
+                    getInfoEvents();
+                    setModalVisible(false);
+                  }
+                }
+              ],
+              { cancelable: false }
+            );
           }}
         >
           <Image

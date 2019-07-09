@@ -68,7 +68,9 @@ function Auth({ navigation }) {
       type: arrayTypeUsers[TypeUser],
       country: Country,
       address: address.value || undefined,
-      zip_code: zip_code.value || undefined
+      zip_code: zip_code.value || undefined,
+      photo_url:
+        "https://www.jeancoutu.com/globalassets/revamp/photo/conseils-photo/20160302-01-reseaux-sociaux-profil/image-principale-919b9d.png"
     };
 
     // for register in DB online
