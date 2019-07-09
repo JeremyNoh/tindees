@@ -4,27 +4,27 @@
     "slug": "tindees",
     "privacy": "public",
     "sdkVersion": "33.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/tindees.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#A5AEFF"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "android": {
+      "package": "com.jeremynoh.tindees",
+      "versionCode": 1
+    },
+    "description": "App permettant de mettre en relation des réfugiés et des Locaux à travers des Evénements à thème",
+    "githubUrl": "https://github.com/JeremyNoh/tindees-app"
   }
 }
