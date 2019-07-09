@@ -10,3 +10,5 @@ export const EVENT = "/api/event/";
 export const MY_EVENT = "myevent/";
 // Api For custom Avatar
 export const API_AVATAR = "https://api.adorable.io/avatars";
+
+export const API_IMG_BB = "https://api.imgbb.com/1/";

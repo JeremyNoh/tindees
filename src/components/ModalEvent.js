@@ -59,14 +59,17 @@ export const ModalEvent = ({
       });
   };
 
+  console.log(event);
+
   return (
     <Overlay
       isVisible={true}
-      windowBackgroundColor="rgba(255, 255, 255, .5)"
+      windowBackgroundColor="white"
       overlayBackgroundColor="white"
       onBackdropPress={() => isClose(false)}
       height={height - 50}
       width={width - 50}
+      animationType="slide"
     >
       <View>
         <TouchableOpacity
@@ -82,6 +85,13 @@ export const ModalEvent = ({
         <Card title={event.name}>
           <Text>{event.description}</Text>
         </Card>
+
+        <View>
+          <View>
+            <Text>date de Debut</Text>
+            <Text>date Fin</Text>
+          </View>
+        </View>
         {isRegistered ? (
           <Button
             onPress={() => {
