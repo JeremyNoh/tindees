@@ -9,7 +9,6 @@ import { Updates, Expo } from "expo";
 
 export const ChangeLangue = () => {
   const setLang = async lang => {
-    console.log("shit");
     let result = await setAppLang(lang);
     if (result) {
       Updates.reload();

@@ -26,7 +26,6 @@
     "CREATE": "Créer un Event",
     "CHOICE_DATE": "Choisi le debut et la fin de l'event :",
     "NO_EVENT": "Pas d'event Refresh ou reviens plus tard",
-    "DATE_EVENT": "Date de L'event :",
     "CATEGORY": "Catégorie",
     "UNSUBSCRIBE_EVENT": "Se desinscrire",
     "SUBSCRIBE_EVENT": "Je Participe"

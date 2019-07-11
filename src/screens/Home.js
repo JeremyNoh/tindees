@@ -88,6 +88,19 @@ function Home({ navigation }) {
     endDate: dateNow()
   });
 
+  mock = [
+    {
+      name: "Mock",
+      description:
+        "Illud tamen clausos vehementer angebat quod captis navigiis, quae fruconsumendo inediae propinquantis aerumnas exitialis horrebant.",
+      startDate: "2019-07-11 10:10 ",
+      endDate: "2019-07-11 10:10 ",
+      category: "Category",
+      zip_code: 77090,
+      address: "20 avenue de la vallée"
+    }
+  ];
+
   useEffect(() => {
     //   ComponentDidMount
     if (firstInApp) {
@@ -141,11 +154,13 @@ function Home({ navigation }) {
 
     getEvents(infoUser.token, infoUser.uuid)
       .then(res => {
+        console.log(res);
+
         res.data.length === 0 ? setAllEvent(null) : setAllEvent(res.data);
         setRefreshing(false);
       })
       .catch(err => {
-        setAllEvent(null);
+        setAllEvent(mock);
         setRefreshing(false);
       });
   };

@@ -8,13 +8,20 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Alert
+  Alert,
+  Modal,
+  ImageBackground
 } from "react-native";
 import Title from "./Title";
 import { Button, Card, Text } from "react-native-elements";
 import { joinEvent, deleteEvent } from "../../api/event";
-import { BUTTON_COLOR_ONE, BACKGROUND_BODY } from "../../utils/colors";
-import DatePicker from "react-native-datepicker";
+import {
+  BUTTON_COLOR_ONE,
+  BACKGROUND_BODY,
+  COLOR_TEXT,
+  PURPLE
+} from "../../utils/colors";
+
 import Container from "./Container";
 import { translate } from "../../locale/local";
 
@@ -81,18 +88,21 @@ export const ModalEvent = ({
       });
   };
 
+  // event.description =
+  //   "Illud tamen clausos vehementer angebat quod captis navigiis, quae frumenta vehebant per flumen, Isauri quidem alimentorum copiis adfluebant, ipsi vero solitarum ";
+
   return (
-    <Overlay
-      isVisible={true}
-      windowBackgroundColor="white"
-      overlayBackgroundColor="white"
-      onBackdropPress={() => isClose(false)}
-      height={height - 50}
-      width={width - 50}
+    <Modal
       animationType="slide"
+      transparent={false}
+      visible={true}
+      onRequestClose={() => {}}
     >
-      <Container>
-        <View>
+      <ImageBackground
+        source={require("../../assets/wallpa.png")}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <View style={{ paddingLeft: 50 }}>
           <TouchableOpacity
             onPress={() => {
               isClose(false);
@@ -100,153 +110,117 @@ export const ModalEvent = ({
           >
             <Image
               source={require("../../assets/cross.png")}
-              style={{ width: 35, height: 35 }}
+              style={[
+                { marginBottom: 10, marginTop: 90 },
+                { width: 35, height: 35 }
+              ]}
             />
           </TouchableOpacity>
-          <Card title={event.name} titleStyle={styles.title}>
-            <View style={{ alignItems: "center" }}>
-              <View style={styles.alignElement}>
-                <Text style={styles.title}>
-                  {translate("EVENT.CATEGORY", LangApp)} :{" "}
-                </Text>
-                <Text>{event.category}</Text>
-              </View>
-              <View style={styles.alignElement}>
-                <Text style={styles.title}>
-                  {translate("FIELDS.EVENT_DESC", LangApp)} :{" "}
-                </Text>
-                <Text>{event.description}</Text>
-              </View>
-              <View style={{ alignItems: "center", marginTop: 20 }}>
-                <Text style={styles.title}>
-                  {translate("EVENT.DATE_EVENT", LangApp)}{" "}
-                </Text>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    marginTop: 5
-                  }}
-                >
-                  <View style={{ marginRight: 20 }}>
-                    <DatePicker
-                      date={event.startDate}
-                      mode="datetime"
-                      minDate={new Date()}
-                      is24Hour={true}
-                      disabled
-                      style={{
-                        width: 140,
-                        borderWidth: 1,
-                        borderColor: "#EDF0F2",
-                        borderRadius: 6
-                      }}
-                      customStyles={{
-                        dateIcon: {
-                          position: "absolute",
-                          left: 0,
-                          top: 4,
-                          marginLeft: 0,
-                          height: 0,
-                          width: 0
-                        },
-                        dateInput: {
-                          marginLeft: 36
-                        },
-                        dateInput: {
-                          borderWidth: 0,
-                          borderBottomWidth: 0.5,
-                          borderColor: BUTTON_COLOR_ONE
-                        }
-                      }}
-                    />
-                  </View>
-
-                  <View>
-                    <DatePicker
-                      date={event.endDate}
-                      mode="datetime"
-                      is24Hour={true}
-                      disabled
-                      style={{
-                        width: 140,
-                        borderWidth: 1,
-                        borderColor: "#EDF0F2",
-                        borderRadius: 6
-                      }}
-                      customStyles={{
-                        dateIcon: {
-                          position: "absolute",
-                          left: 0,
-                          top: 4,
-                          marginLeft: 0,
-                          height: 0,
-                          width: 0
-                        },
-                        dateInput: {
-                          marginLeft: 36
-                        },
-                        dateInput: {
-                          borderWidth: 0,
-                          borderBottomWidth: 0.5,
-                          borderColor: BUTTON_COLOR_ONE
-                        }
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
-              <View style={[styles.alignElement]}>
-                <Text style={styles.title}>
-                  {translate("FIELDS.ADDRESS", LangApp)} :{" "}
-                </Text>
-                <Text>
-                  {event.address} {event.zip_code}
-                </Text>
-              </View>
-            </View>
-          </Card>
-
-          {isRegistered ? (
-            <Button
-              onPress={() => {
-                _deleteEvent();
-              }}
-              buttonStyle={[
-                styles.Button,
-                {
-                  height: 50,
-                  backgroundColor: BACKGROUND_BODY,
-                  borderWidth: 1,
-                  borderColor: BUTTON_COLOR_ONE,
-                  borderRadius: 5
-                }
-              ]}
-              title={translate("EVENT.UNSUBSCRIBE_EVENT", LangApp)}
-              titleStyle={{ color: "black" }}
-            />
-          ) : (
-            <Button
-              onPress={() => {
-                _joinEvent();
-              }}
-              buttonStyle={[
-                styles.Button,
-                {
-                  height: 50,
-                  backgroundColor: BACKGROUND_BODY,
-                  borderWidth: 1,
-                  borderColor: BUTTON_COLOR_ONE,
-                  borderRadius: 5
-                }
-              ]}
-              title={translate("EVENT.SUBSCRIBE_EVENT", LangApp)}
-              titleStyle={{ color: "black" }}
-            />
-          )}
         </View>
-      </Container>
-    </Overlay>
+
+        <Container style={{ backgroundColor: "none", marginTop: 80 }}>
+          <ScrollView>
+            <View style={{ alignItems: "center" }}>
+              <View style={{ alignItems: "center" }}>
+                <Title title={event.name} style={{ color: "white" }} />
+                <Text style={[styles.fontSize, {}]}>{event.category}</Text>
+              </View>
+              <View
+                style={{
+                  alignItems: "center",
+                  height: 3,
+                  borderRadius: 20,
+                  width: "100%",
+                  marginVertical: 10,
+                  backgroundColor: "black"
+                }}
+              />
+
+              <View style={{ marginTop: 15 }}>
+                <Text style={[styles.fontSize, { fontWeight: "bold" }]}>
+                  Du {event.startDate} au {event.endDate}
+                </Text>
+              </View>
+
+              <Text
+                style={[
+                  styles.fontSize,
+                  { marginTop: 10, fontStyle: "italic" }
+                ]}
+              >
+                {event.description}
+              </Text>
+
+              <Text
+                style={[
+                  styles.fontSize,
+                  {
+                    marginTop: 10,
+                    borderWidth: 1,
+                    borderColor: BUTTON_COLOR_ONE,
+                    borderRadius: 5
+                  }
+                ]}
+              >
+                {event.address} {event.zip_code}
+              </Text>
+
+              {/* <TouchableOpacity
+              style={{
+                marginTop: 30
+              }}
+            >
+              <View style={{ alignItems: "center" }}>
+                <Image
+                  source={require("../../assets/user.png")}
+                  style={{ width: 25, height: 25 }}
+                />
+              </View>
+              <Text style={{}}>Liste des Participants</Text>
+            </TouchableOpacity> */}
+
+              {isRegistered ? (
+                <Button
+                  onPress={() => {
+                    _deleteEvent();
+                  }}
+                  buttonStyle={[
+                    styles.Button,
+                    {
+                      height: 50,
+                      backgroundColor: BACKGROUND_BODY,
+                      borderWidth: 1,
+                      borderColor: BUTTON_COLOR_ONE,
+                      borderRadius: 5
+                    }
+                  ]}
+                  title={translate("EVENT.UNSUBSCRIBE_EVENT", LangApp)}
+                  titleStyle={{ color: "black" }}
+                />
+              ) : (
+                <Button
+                  onPress={() => {
+                    _joinEvent();
+                  }}
+                  buttonStyle={[
+                    styles.Button,
+                    {
+                      height: 50,
+                      backgroundColor: BACKGROUND_BODY,
+                      borderWidth: 1,
+                      borderColor: BUTTON_COLOR_ONE,
+                      borderRadius: 5
+                    }
+                  ]}
+                  title={translate("EVENT.SUBSCRIBE_EVENT", LangApp)}
+                  titleStyle={{ color: "black" }}
+                />
+              )}
+            </View>
+          </ScrollView>
+        </Container>
+      </ImageBackground>
+    </Modal>
   );
 };
 
@@ -258,12 +232,17 @@ const styles = StyleSheet.create({
     marginTop: 90,
     borderRadius: 5
   },
+  textPlaceholder: {
+    color: BUTTON_COLOR_ONE
+  },
   alignElement: {
     alignItems: "center",
-    marginTop: 20
+    alignContent: "center",
+    flex: 1,
+    justifyContent: "center"
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold"
+  fontSize: {
+    fontSize: 17,
+    color: "white"
   }
 });
