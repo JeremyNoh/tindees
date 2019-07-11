@@ -1,0 +1,67 @@
+{
+  "NOT_DEFINE": " Texte non traduit",
+  "APP_LANGUE": "App en français",
+  "TITLE": "Tindees",
+  "DESCRIPTION": "Partage sur des sujets communs",
+  "AUTH": {
+    "CONNECTION": "Se connecter",
+    "REGISTER": "S'inscrire",
+    "REGISTER_SUCCESS_TITLE": "Inscription réussie",
+    "REGISTER_SUCCESS_DESC": "Je t'invite à te connecter",
+    "CONNECT": "Se connecter",
+    "REGISTER_ACTION": "S'enregistrer"
+  },
+  "HOME": {
+    "TITLE": "Page D'accueil",
+    "NO_FILTER_TITLE": "Filtre non Disponible 😞",
+    "NO_FILTER_DESC": "Cette Fonctionnalité n'est pas encore développer,  Stay Tuned pour la nouvelle mise à jour",
+    "ALL_EVENT": "Tous les Events",
+    "MY_EVENT": "Mes Events"
+  },
+  "EVENT": {
+    "TITLE": "Tindees",
+    "EVENT_ADDED_TITLE": "Event Ajouté",
+    "EVENT_ADDED_DESC": "Des participants s'inscriront très bientôt",
+    "CLOSE": "Fermer",
+    "CREATE": "Créer un Event",
+    "CHOICE_DATE": "Choisi le debut et la fin de l'event :",
+    "NO_EVENT": "Pas d'event Refresh ou reviens plus tard",
+    "DATE_EVENT": "Date de L'event :",
+    "CATEGORY": "Catégorie",
+    "UNSUBSCRIBE_EVENT": "Se desinscrire",
+    "SUBSCRIBE_EVENT": "Je Participe"
+  },
+  "USER": {},
+  "PROFIL": {
+    "NAME": "Profile",
+    "MAJ_INFO": "Tes infos ont été mis à jour",
+    "ACCEPT_PERMISSION": "Désolé, nous avons besoin d'autorisations pour les pellicules pour que cela fonctionne!"
+  },
+  "ALERT": {
+    "SUCCESS": "Bravo 🤗",
+    "CONFIRM": "Confirmer",
+    "CANCEL": "Annuler",
+    "ADD": "Ajouter"
+  },
+  "FIELDS": {
+    "EMAIL": "Email",
+    "PASSWORD": "Mot de passe",
+    "LASTNAME": "Nom",
+    "FIRSTNAME": "Prénom",
+    "ADDRESS": "Adresse",
+    "ZIP_CODE": "Code postal",
+    "ORIGIN": "Pays d'origine",
+    "CATEGORY": "Choisi ma Categorie",
+    "EVENT_NAME": "nom de l'evenement",
+    "EVENT_DESC": "Description",
+    "EVENT_DATE_START": "Debut de l'event",
+    "EVENT_DATE_END": "Debut de l'event"
+  },
+  "MAJ": "Mettre à Jour",
+  "ERROR": {
+    "RETRY": "Réessayez",
+    "FAIL": "Une erreur s'est produite 😥",
+    "INCOMPLETE_FIELDS_TITLE": "Champs Incomplet 😥",
+    "INCOMPLETE_FIELDS_DESC": "Veuillez remplir tout les champs"
+  }
+}

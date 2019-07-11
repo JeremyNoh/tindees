@@ -7,7 +7,8 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  Alert
 } from "react-native";
 import Title from "./Title";
 import { Button, Card, Text } from "react-native-elements";
@@ -15,6 +16,7 @@ import { joinEvent, deleteEvent } from "../../api/event";
 import { BUTTON_COLOR_ONE, BACKGROUND_BODY } from "../../utils/colors";
 import DatePicker from "react-native-datepicker";
 import Container from "./Container";
+import { translate } from "../../locale/local";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -25,7 +27,8 @@ export const ModalEvent = ({
   token,
   uuid,
   isRegistered,
-  refreshing
+  refreshing,
+  LangApp
 }) => {
   const _joinEvent = () => {
     joinEvent({
@@ -38,8 +41,17 @@ export const ModalEvent = ({
         refreshing();
       })
       .catch(err => {
-        alert("Error Something was wrong");
-        console.log(err);
+        Alert.alert(
+          translate("ERROR.RETRY", LangApp),
+          translate("ERROR.FAIL", LangApp),
+          [
+            {
+              text: "OK",
+              onPress: () => {}
+            }
+          ],
+          { cancelable: false }
+        );
       });
   };
 
@@ -54,10 +66,18 @@ export const ModalEvent = ({
         refreshing();
       })
       .catch(err => {
-        alert("Error Something was wrong");
+        Alert.alert(
+          translate("ERROR.RETRY", LangApp),
+          translate("ERROR.FAIL", LangApp),
+          [
+            {
+              text: "OK",
+              onPress: () => {}
+            }
+          ],
+          { cancelable: false }
+        );
         isClose(false);
-
-        console.log(err);
       });
   };
 
@@ -86,15 +106,21 @@ export const ModalEvent = ({
           <Card title={event.name} titleStyle={styles.title}>
             <View style={{ alignItems: "center" }}>
               <View style={styles.alignElement}>
-                <Text style={styles.title}>Catégorie : </Text>
+                <Text style={styles.title}>
+                  {translate("EVENT.CATEGORY", LangApp)} :{" "}
+                </Text>
                 <Text>{event.category}</Text>
               </View>
               <View style={styles.alignElement}>
-                <Text style={styles.title}>Description : </Text>
+                <Text style={styles.title}>
+                  {translate("FIELDS.EVENT_DESC", LangApp)} :{" "}
+                </Text>
                 <Text>{event.description}</Text>
               </View>
               <View style={{ alignItems: "center", marginTop: 20 }}>
-                <Text style={styles.title}>Date de L'event : </Text>
+                <Text style={styles.title}>
+                  {translate("EVENT.DATE_EVENT", LangApp)}{" "}
+                </Text>
                 <View
                   style={{
                     display: "flex",
@@ -106,10 +132,7 @@ export const ModalEvent = ({
                     <DatePicker
                       date={event.startDate}
                       mode="datetime"
-                      placeholder="Debut de l'event"
                       minDate={new Date()}
-                      confirmBtnText="Confirm"
-                      cancelBtnText="Cancel"
                       is24Hour={true}
                       disabled
                       style={{
@@ -143,9 +166,6 @@ export const ModalEvent = ({
                     <DatePicker
                       date={event.endDate}
                       mode="datetime"
-                      placeholder="Fin de l'event"
-                      confirmBtnText="Confirm"
-                      cancelBtnText="Cancel"
                       is24Hour={true}
                       disabled
                       style={{
@@ -177,7 +197,9 @@ export const ModalEvent = ({
                 </View>
               </View>
               <View style={[styles.alignElement]}>
-                <Text style={styles.title}>Adresse : </Text>
+                <Text style={styles.title}>
+                  {translate("FIELDS.ADDRESS", LangApp)} :{" "}
+                </Text>
                 <Text>
                   {event.address} {event.zip_code}
                 </Text>
@@ -200,7 +222,7 @@ export const ModalEvent = ({
                   borderRadius: 5
                 }
               ]}
-              title="Se desinscrire"
+              title={translate("EVENT.UNSUBSCRIBE_EVENT", LangApp)}
               titleStyle={{ color: "black" }}
             />
           ) : (
@@ -218,7 +240,7 @@ export const ModalEvent = ({
                   borderRadius: 5
                 }
               ]}
-              title="Je Participe"
+              title={translate("EVENT.SUBSCRIBE_EVENT", LangApp)}
               titleStyle={{ color: "black" }}
             />
           )}

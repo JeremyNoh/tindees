@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   View,
@@ -6,8 +6,7 @@ import {
   TextInput,
   Alert,
   AsyncStorage,
-  ScrollView,
-  Text
+  ScrollView
 } from "react-native";
 import { withNavigation } from "react-navigation";
 
@@ -25,20 +24,24 @@ import Title from "../components/Title";
 
 // Libs Extenal
 import { Button, ButtonGroup } from "react-native-elements";
+import Select from "react-native-select-plus";
 
 import useInput from "../hooks/useInput";
 import { registerUser, connecteUser } from "../../api/auth";
 import { arrayTypeUsers } from "../../utils/const";
 import { country } from "../../assets/country/country";
-import Select from "react-native-select-plus";
-import { AdressInput } from "../components/AdressInput";
+import { ChangeLangue } from "../components/ChangeLangue";
+import { translate, getAppLang } from "../../locale/local";
+import { Loading } from "../components/Loading";
 
 function Auth({ navigation }) {
+  // for settup ComponentDidMount()
+  const [firstInApp, setFirstInApp] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [TypeUser, setTypeUser] = useState(0);
+  const [LangApp, setLangApp] = useState(undefined);
 
   const [Country, setCountry] = useState();
-
   // input Value
   const username = useInput();
   const email = useInput();
@@ -47,6 +50,19 @@ function Auth({ navigation }) {
   const firstname = useInput();
   const address = useInput();
   const zip_code = useInput();
+
+  useEffect(() => {
+    //   ComponentDidMount
+    if (firstInApp) {
+      setLang();
+      setFirstInApp(false);
+    }
+  });
+
+  setLang = async () => {
+    let getApLang = await getAppLang();
+    setLangApp(getApLang);
+  };
 
   // SWITCH INTO SIGNIN | SIGNUP
   _updateIndex = selectedIndex => {
@@ -60,7 +76,7 @@ function Auth({ navigation }) {
   // RECUP champs User and Try to Register
   _signUp = () => {
     let user = {
-      email: email.value,
+      email: email.value.toLowerCase(),
       password: password.value,
       password_confirmation: password.value,
       lastname: lastname.value || undefined,
@@ -72,22 +88,23 @@ function Auth({ navigation }) {
     };
 
     // for register in DB online
-
     registerUser(user)
       .then(res => {
-        Alert.alert("Inscription réussi", "Je t'invite à te connecter ", [
-          { text: "OK" }
-        ]);
+        Alert.alert(
+          translate("AUTH.REGISTER_SUCCESS_TITLE", LangApp),
+          translate("AUTH.REGISTER_SUCCESS_DESC", LangApp),
+          [{ text: "OK" }]
+        );
       })
       .catch(err => {
-        alert("Error please retry");
+        alert(translate("ERROR.RETRY", LangApp));
       });
   };
 
   // RECUP champs User and Try to Connect & Stock INfo to Storage
   _signIn = () => {
     let user = {
-      email: email.value,
+      email: email.value.toLowerCase(),
       password: password.value
     };
 
@@ -136,14 +153,14 @@ function Auth({ navigation }) {
           style={styles.TextInput}
           placeholderTextColor={BUTTON_COLOR_ONE}
           {...email}
-          placeholder="Email"
+          placeholder={translate("FIELDS.EMAIL", LangApp)}
           autoCapitalize="none"
           autoCorrect={false}
         />
         <TextInput
           style={styles.TextInput}
           placeholderTextColor={BUTTON_COLOR_ONE}
-          placeholder="Password"
+          placeholder={translate("FIELDS.PASSWORD", LangApp)}
           autoCapitalize="none"
           textContentType="password"
           autoCorrect={false}
@@ -157,7 +174,7 @@ function Auth({ navigation }) {
           disabled={!(email.value.length >= 2 && password.value.length >= 4)}
           disabledStyle={styles.desabled}
           disabledTitleStyle={{ color: BUTTON_COLOR_ONE }}
-          title="Se connecter"
+          title={translate("AUTH.CONNECT", LangApp)}
         />
         {/* 
         <Text style={{ textDecorationLine: "underline" }}>
@@ -166,7 +183,6 @@ function Auth({ navigation }) {
       </View>
     );
   };
-
   // VIEW - For Register
   registerView = () => {
     return (
@@ -180,8 +196,6 @@ function Auth({ navigation }) {
               height: 30,
               width: 300,
               borderRadius: 20
-              // backgroundColor: GREEN,
-              // borderColor: COLOR_TEXT
             }}
             selectedButtonStyle={[
               {
@@ -195,7 +209,7 @@ function Auth({ navigation }) {
           <TextInput
             style={styles.TextInput}
             placeholderTextColor={BUTTON_COLOR_ONE}
-            placeholder="Email"
+            placeholder={translate("FIELDS.EMAIL", LangApp)}
             autoCapitalize="none"
             textContentType="emailAddress"
             {...email}
@@ -203,14 +217,14 @@ function Auth({ navigation }) {
           <TextInput
             style={styles.TextInput}
             placeholderTextColor={BUTTON_COLOR_ONE}
-            placeholder="Password"
+            placeholder={translate("FIELDS.PASSWORD", LangApp)}
             secureTextEntry={true}
             {...password}
           />
           <TextInput
             style={styles.TextInput}
             placeholderTextColor={BUTTON_COLOR_ONE}
-            placeholder="Nom"
+            placeholder={translate("FIELDS.LASTNAME", LangApp)}
             autoCapitalize="none"
             autoCorrect={false}
             {...lastname}
@@ -218,7 +232,7 @@ function Auth({ navigation }) {
           <TextInput
             style={styles.TextInput}
             placeholderTextColor={BUTTON_COLOR_ONE}
-            placeholder="Prenom"
+            placeholder={translate("FIELDS.FIRSTNAME", LangApp)}
             autoCapitalize="none"
             autoCorrect={false}
             {...firstname}
@@ -226,14 +240,14 @@ function Auth({ navigation }) {
           <TextInput
             style={styles.TextInput}
             placeholderTextColor={BUTTON_COLOR_ONE}
-            placeholder="Adresse"
+            placeholder={translate("FIELDS.ADDRESS", LangApp)}
             dataDetectorTypes="address"
             {...address}
           />
           <TextInput
             style={styles.TextInput}
             placeholderTextColor={BUTTON_COLOR_ONE}
-            placeholder="Code Postal"
+            placeholder={translate("FIELDS.ZIP_CODE", LangApp)}
             keyboardType="numeric"
             autoCorrect={false}
             maxLength={5}
@@ -242,7 +256,7 @@ function Auth({ navigation }) {
           <Select
             data={country}
             width={300}
-            placeholder="Pays d'Origine"
+            placeholder={translate("FIELDS.ORIGIN", LangApp)}
             onSelect={(key, value) => {
               setCountry(value);
             }}
@@ -253,7 +267,7 @@ function Auth({ navigation }) {
         <Button
           onPress={() => _signUp()}
           buttonStyle={styles.Button}
-          title="S'enregistrer"
+          title={translate("AUTH.REGISTER_ACTION", LangApp)}
           disabled={
             !(password.value.length >= 4 && _validateEmail(email.value))
           }
@@ -264,14 +278,32 @@ function Auth({ navigation }) {
     );
   };
 
+  if (!LangApp) {
+    return <Loading />;
+  }
+
   return (
     <Container>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 50,
+          // right: 20,
+          alignItems: "center"
+        }}
+      >
+        <ChangeLangue />
+      </View>
       <View style={{ position: "absolute", top: 70, alignItems: "center" }}>
         <Title title="Tindees" style={{ color: BUTTON_COLOR_ONE }} />
+
         <ButtonGroup
           onPress={_updateIndex}
           selectedIndex={selectedIndex}
-          buttons={["Se Connecter", "S'inscrire"]}
+          buttons={[
+            translate("AUTH.CONNECTION", LangApp),
+            translate("AUTH.REGISTER", LangApp)
+          ]}
           containerStyle={{
             height: 30,
             width: 300,

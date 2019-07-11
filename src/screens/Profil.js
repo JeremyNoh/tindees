@@ -17,7 +17,6 @@ import Select from "react-native-select-plus";
 // Internal Component
 import { BUTTON_COLOR_ONE, COLOR_TEXT } from "../../utils/colors";
 import Container from "../components/Container";
-import Title from "../components/Title";
 
 import { Loading } from "../components/Loading";
 import useInput from "../hooks/useInput";
@@ -26,10 +25,7 @@ import { ImagePicker, Permissions, Constants } from "expo";
 import { API_KEY_IMG_BB } from "../../api/const";
 import { API_IMG_BB } from "../../endpoint";
 import { country } from "../../assets/country/country";
-
-_noData = () => {
-  return <Title title="No data sorry " />;
-};
+import { getAppLang, translate } from "../../locale/local";
 
 function Profil({ navigation }) {
   const [infoUser, setInfoUser] = useState(undefined);
@@ -39,6 +35,7 @@ function Profil({ navigation }) {
 
   const [Country, setCountry] = useState();
   const [InitCountry, setInitCountry] = useState(null);
+  const [LangApp, setLangApp] = useState(undefined);
 
   // input Value
 
@@ -53,10 +50,16 @@ function Profil({ navigation }) {
     //   ComponentDidMount
     if (firstInApp) {
       getInfo();
+      setLang();
       getPermissionAsync();
       setFirstInApp(false);
     }
   });
+
+  setLang = async () => {
+    let getApLang = await getAppLang();
+    setLangApp(getApLang);
+  };
 
   const getInfo = async () => {
     const infoUserJson = await AsyncStorage.getItem("infoUser");
@@ -73,7 +76,17 @@ function Profil({ navigation }) {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
-        alert("Sorry, we need camera roll permissions to make this work!");
+        Alert.alert(
+          translate("ERROR.RETRY", LangApp),
+          translate("PROFIL.ACCEPT_PERMISSION", LangApp),
+          [
+            {
+              text: "OK",
+              onPress: () => {}
+            }
+          ],
+          { cancelable: false }
+        );
       }
     }
   };
@@ -82,13 +95,12 @@ function Profil({ navigation }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3, 3],
       base64: true
     });
 
     if (!result.cancelled) {
       _handleImagePicked(result);
-      // setImage(result.uri);
     }
   };
 
@@ -107,10 +119,17 @@ function Profil({ navigation }) {
         setImage(uploadResult.data.medium.url);
       }
     } catch (e) {
-      console.log({ uploadResponse });
-      console.log({ uploadResult });
-      console.log({ e });
-      alert("Upload failed, sorry :(");
+      Alert.alert(
+        translate("ERROR.RETRY", LangApp),
+        translate("ERROR.FAIL", LangApp),
+        [
+          {
+            text: "OK",
+            onPress: () => {}
+          }
+        ],
+        { cancelable: false }
+      );
     } finally {
       setUploading(false);
     }
@@ -130,8 +149,8 @@ function Profil({ navigation }) {
     PutInfoUser(infoUser.token, infoUser.uuid, data)
       .then(res => {
         Alert.alert(
-          "Success 🤗",
-          "Tes infos ont été mis à jour ",
+          translate("ALERT.SUCCESS", LangApp),
+          translate("PROFIL.MAJ_INFO", LangApp),
           [
             {
               text: "OK",
@@ -140,26 +159,17 @@ function Profil({ navigation }) {
           ],
           { cancelable: false }
         );
-        alert("les données sont mis à jour");
         _updateStorage(data);
       })
-      .catch(() => {
-        console.log("erro");
-      });
+      .catch(() => {});
   };
 
   _updateStorage = async data => {
     await AsyncStorage.setItem("infoUser", JSON.stringify(data));
   };
 
-  if (infoUser === undefined) {
+  if (infoUser === undefined || !LangApp) {
     return <Loading />;
-  } else if (infoUser === null) {
-    return (
-      <View style={[styles.container, styles.containerView]}>
-        {this._noData()}
-      </View>
-    );
   }
 
   return (
@@ -167,7 +177,7 @@ function Profil({ navigation }) {
       <Header
         backgroundColor={BUTTON_COLOR_ONE}
         centerComponent={{
-          text: `Profil`,
+          text: `${translate("PROFIL.NAME", LangApp)}`,
           style: { color: "#fff", fontWeight: "bold", fontSize: 20 }
         }}
         rightComponent={{
@@ -197,7 +207,7 @@ function Profil({ navigation }) {
             <TextInput
               style={styles.TextInput}
               placeholderTextColor={BUTTON_COLOR_ONE}
-              placeholder={infoUser.email || "Email"}
+              placeholder={infoUser.email || translate("FIELDS.EMAIL", LangApp)}
               editable={false}
               autoCapitalize="none"
               textContentType="emailAddress"
@@ -206,7 +216,9 @@ function Profil({ navigation }) {
             <TextInput
               style={styles.TextInput}
               placeholderTextColor={BUTTON_COLOR_ONE}
-              placeholder={infoUser.lastname || "Nom"}
+              placeholder={
+                infoUser.lastname || translate("FIELDS.LASTNAME", LangApp)
+              }
               autoCapitalize="none"
               autoCorrect={false}
               {...lastname}
@@ -214,7 +226,9 @@ function Profil({ navigation }) {
             <TextInput
               style={styles.TextInput}
               placeholderTextColor={BUTTON_COLOR_ONE}
-              placeholder={infoUser.firstname || "Prenom"}
+              placeholder={
+                infoUser.firstname || translate("FIELDS.FIRSTNAME", LangApp)
+              }
               autoCapitalize="none"
               autoCorrect={false}
               {...firstname}
@@ -222,14 +236,18 @@ function Profil({ navigation }) {
             <TextInput
               style={styles.TextInput}
               placeholderTextColor={BUTTON_COLOR_ONE}
-              placeholder={infoUser.address || "Adresse"}
+              placeholder={
+                infoUser.address || translate("FIELDS.ADDRESS", LangApp)
+              }
               dataDetectorTypes="address"
               {...address}
             />
             <TextInput
               style={styles.TextInput}
               placeholderTextColor={BUTTON_COLOR_ONE}
-              placeholder={infoUser.zip_code || "Code Postal"}
+              placeholder={
+                infoUser.zip_code || translate("FIELDS.ZIP_CODE", LangApp)
+              }
               keyboardType="numeric"
               autoCorrect={false}
               maxLength={5}
@@ -238,7 +256,7 @@ function Profil({ navigation }) {
             <Select
               data={country}
               width={300}
-              placeholder="Pays d'Origine"
+              placeholder={translate("FIELDS.ORIGIN", LangApp)}
               onSelect={(key, value) => {
                 setCountry(value);
               }}
@@ -251,7 +269,7 @@ function Profil({ navigation }) {
               buttonStyle={styles.Button}
               disabledStyle={styles.desabled}
               disabledTitleStyle={{ color: BUTTON_COLOR_ONE }}
-              title="Mettre à Jour"
+              title={translate("MAJ", LangApp)}
             />
           </ScrollView>
         </View>

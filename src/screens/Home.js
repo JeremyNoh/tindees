@@ -36,6 +36,7 @@ import Loading from "../components/Loading";
 import CardEvent from "../components/CardEvent";
 import { ModalEvent } from "../components/ModalEvent";
 import { getAllCategory } from "../../api/categorie";
+import { getAppLang, translate } from "../../locale/local";
 
 // Hok
 import useInput from "../hooks/useInput";
@@ -73,6 +74,9 @@ function Home({ navigation }) {
   // For My EVENT
   const [MyEvent, setMyEvent] = useState(undefined);
 
+  // Langue Of the App
+  const [LangApp, setLangApp] = useState(undefined);
+
   // form for add Event
   const nameEvent = useInput();
   const descEvent = useInput();
@@ -87,11 +91,17 @@ function Home({ navigation }) {
   useEffect(() => {
     //   ComponentDidMount
     if (firstInApp) {
+      setLang();
       getInfo();
       getInfoEvents();
       setFirstInApp(false);
     }
   });
+
+  setLang = async () => {
+    let getApLang = await getAppLang();
+    setLangApp(getApLang);
+  };
 
   // FUNC for load UserData and Category
   const getInfo = async () => {
@@ -112,9 +122,7 @@ function Home({ navigation }) {
 
         setCategory(categoryResult);
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
   };
 
   // CALL API FOR ALL EVENTS + MY EVENT
@@ -151,8 +159,8 @@ function Home({ navigation }) {
       infoEvent.zip_code.length !== 5
     ) {
       Alert.alert(
-        "Champs Incomplet",
-        "veuillez remplir tout les champs ",
+        translate("ERROR.INCOMPLETE_FIELDS_TITLE", LangApp),
+        translate("ERROR.INCOMPLETE_FIELDS_DESC", LangApp),
         [
           {
             text: "OK",
@@ -166,8 +174,8 @@ function Home({ navigation }) {
     addEvent(infoEvent)
       .then(res => {
         Alert.alert(
-          "Event Ajouté",
-          "des participants s'inscriront très bientôt",
+          translate("EVENT.EVENT_ADDED_TITLE", LangApp),
+          translate("EVENT.EVENT_ADDED_DESC", LangApp),
           [
             {
               text: "OK",
@@ -222,18 +230,18 @@ function Home({ navigation }) {
                 borderRadius: 5
               }
             ]}
-            title="Fermer"
+            title={translate("EVENT.CLOSE", LangApp)}
             titleStyle={{ color: "black" }}
           />
 
           <Container>
             <ScrollView>
               <View>
-                <Title title="Créer un Event" />
+                <Title title={translate("EVENT.CREATE", LangApp)} />
                 <Select
                   data={category}
                   width={300}
-                  placeholder="Choisi ma Categorie"
+                  placeholder={translate("FIELDS.CATEGORY", LangApp)}
                   onSelect={(key, value) =>
                     setAddInfoEvent({ ...AddInfoEvent, id_category: key })
                   }
@@ -243,7 +251,7 @@ function Home({ navigation }) {
                 <TextInput
                   style={styles.TextInput}
                   placeholderTextColor={BUTTON_COLOR_ONE}
-                  placeholder="nom de l'evenement"
+                  placeholder={translate("FIELDS.EVENT_NAME", LangApp)}
                   autoCapitalize="none"
                   {...nameEvent}
                 />
@@ -257,7 +265,7 @@ function Home({ navigation }) {
                     }
                   ]}
                   placeholderTextColor={BUTTON_COLOR_ONE}
-                  placeholder="Description"
+                  placeholder={translate("FIELDS.EVENT_DESC", LangApp)}
                   autoCapitalize="none"
                   multiline={true}
                   numberOfLines={4}
@@ -265,7 +273,7 @@ function Home({ navigation }) {
                 />
                 <View style={{ marginTop: 10 }}>
                   <Text style={styles.textPlaceholder}>
-                    Choisi le debut et la fin de l'event :
+                    {translate("EVENT.CHOICE_DATE", LangApp)}
                   </Text>
                   <View
                     style={{
@@ -278,10 +286,13 @@ function Home({ navigation }) {
                       <DatePicker
                         date={AddInfoEvent.startDate}
                         mode="datetime"
-                        placeholder="Debut de l'event"
+                        placeholder={translate(
+                          "FIELDS.EVENT_DATE_START",
+                          LangApp
+                        )}
                         minDate={new Date()}
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
+                        confirmBtnText={translate("ALERT.CONFIRM", LangApp)}
+                        cancelBtnText={translate("ALERT.CANCEL", LangApp)}
                         is24Hour={true}
                         style={{
                           width: 140,
@@ -317,10 +328,13 @@ function Home({ navigation }) {
                       <DatePicker
                         date={AddInfoEvent.endDate}
                         mode="datetime"
-                        placeholder="Fin de l'event"
+                        placeholder={translate(
+                          "FIELDS.EVENT_DATE_END",
+                          LangApp
+                        )}
                         minDate={AddInfoEvent.startDate}
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
+                        confirmBtnText={translate("ALERT.CONFIRM", LangApp)}
+                        cancelBtnText={translate("ALERT.CANCEL", LangApp)}
                         is24Hour={true}
                         style={{
                           width: 140,
@@ -356,14 +370,14 @@ function Home({ navigation }) {
                 <TextInput
                   style={styles.TextInput}
                   placeholderTextColor={BUTTON_COLOR_ONE}
-                  placeholder="Adresse"
+                  placeholder={translate("FIELDS.ADDRESS", LangApp)}
                   dataDetectorTypes="address"
                   {...address}
                 />
                 <TextInput
                   style={styles.TextInput}
                   placeholderTextColor={BUTTON_COLOR_ONE}
-                  placeholder="Code Postal"
+                  placeholder={translate("FIELDS.ZIP_CODE", LangApp)}
                   keyboardType="numeric"
                   autoCorrect={false}
                   maxLength={5}
@@ -382,7 +396,7 @@ function Home({ navigation }) {
                     });
                   }}
                   buttonStyle={styles.Button}
-                  title="Ajouter"
+                  title={translate("ALERT.ADD", LangApp)}
                 />
               </View>
             </ScrollView>
@@ -404,7 +418,7 @@ function Home({ navigation }) {
           showsHorizontalScrollIndicator={false}
         >
           <View>
-            <Text>Pas d'event Refresh ou reviens plus tard</Text>
+            <Text>{translate("EVENT.NO_EVENT", LangApp)}</Text>
           </View>
         </ScrollView>
       </View>
@@ -480,7 +494,7 @@ function Home({ navigation }) {
     }
   };
 
-  if (infoUser === null) {
+  if (infoUser === null || !LangApp) {
     return loadingView();
   }
   return (
@@ -488,7 +502,7 @@ function Home({ navigation }) {
       <Header
         backgroundColor={BUTTON_COLOR_ONE}
         centerComponent={{
-          text: `Home`,
+          text: `${translate("HOME.TITLE", LangApp)}`,
           style: { color: "#fff", fontWeight: "bold", fontSize: 20 }
         }}
         leftComponent={
@@ -529,12 +543,16 @@ function Home({ navigation }) {
             token={infoUser.token}
             isRegistered={selectedIndex === 0 ? false : true}
             refreshing={_onRefresh}
+            LangApp={LangApp}
           />
         )}
         <ButtonGroup
           onPress={_updateIndex}
           selectedIndex={selectedIndex}
-          buttons={["ALL", "Mes Events"]}
+          buttons={[
+            translate("HOME.ALL_EVENT", LangApp),
+            translate("HOME.MY_EVENT", LangApp)
+          ]}
           containerStyle={{
             height: 30,
             width: 300,
@@ -554,8 +572,8 @@ function Home({ navigation }) {
         <TouchableOpacity
           onPress={() => {
             Alert.alert(
-              "Filtre non Disponible 😞",
-              "Cette Fonctionnalité n'est pas encore développer,  Stay Tuned pour la nouvelle mise à jour",
+              translate("HOME.NO_FILTER_TITLE", LangApp),
+              translate("HOME.NO_FILTER_DESC", LangApp),
               [
                 {
                   text: "OK",
