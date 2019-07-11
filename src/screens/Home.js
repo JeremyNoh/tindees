@@ -214,194 +214,186 @@ function Home({ navigation }) {
         visible={modalVisible}
         onRequestClose={() => {}}
       >
-        <>
-          <Button
+        <View style={{ paddingLeft: 50 }}>
+          <TouchableOpacity
             onPress={() => {
               setModalVisible(false);
             }}
-            buttonStyle={[
-              styles.Button,
-              {
-                marginHorizontal: 20,
-                height: 50,
-                backgroundColor: BACKGROUND_BODY,
-                borderWidth: 1,
-                borderColor: BUTTON_COLOR_ONE,
-                borderRadius: 5
-              }
-            ]}
-            title={translate("EVENT.CLOSE", LangApp)}
-            titleStyle={{ color: "black" }}
-          />
+          >
+            <Image
+              source={require("../../assets/cross.png")}
+              style={[
+                { marginBottom: 10, marginTop: 90 },
+                { width: 35, height: 35 }
+              ]}
+            />
+          </TouchableOpacity>
+        </View>
 
-          <Container>
-            <ScrollView>
-              <View>
-                <Title title={translate("EVENT.CREATE", LangApp)} />
-                <Select
-                  data={category}
-                  width={300}
-                  placeholder={translate("FIELDS.CATEGORY", LangApp)}
-                  onSelect={(key, value) =>
-                    setAddInfoEvent({ ...AddInfoEvent, id_category: key })
+        <Container>
+          <ScrollView>
+            <View>
+              <Title title={translate("EVENT.CREATE", LangApp)} />
+              <Select
+                data={category}
+                width={300}
+                placeholder={translate("FIELDS.CATEGORY", LangApp)}
+                onSelect={(key, value) =>
+                  setAddInfoEvent({ ...AddInfoEvent, id_category: key })
+                }
+                search={true}
+                style={[styles.TextInput, { marginTop: 50 }]}
+              />
+              <TextInput
+                style={styles.TextInput}
+                placeholderTextColor={BUTTON_COLOR_ONE}
+                placeholder={translate("FIELDS.EVENT_NAME", LangApp)}
+                autoCapitalize="none"
+                {...nameEvent}
+              />
+              <TextInput
+                style={[
+                  styles.TextInput,
+                  {
+                    height: styles.TextInput.height * 2,
+                    borderWidth: styles.TextInput.borderBottomWidth,
+                    borderColor: styles.TextInput.borderBottomColor
                   }
-                  search={true}
-                  style={[styles.TextInput, {}]}
-                />
-                <TextInput
-                  style={styles.TextInput}
-                  placeholderTextColor={BUTTON_COLOR_ONE}
-                  placeholder={translate("FIELDS.EVENT_NAME", LangApp)}
-                  autoCapitalize="none"
-                  {...nameEvent}
-                />
-                <TextInput
-                  style={[
-                    styles.TextInput,
-                    {
-                      height: styles.TextInput.height * 2,
-                      borderWidth: styles.TextInput.borderBottomWidth,
-                      borderColor: styles.TextInput.borderBottomColor
-                    }
-                  ]}
-                  placeholderTextColor={BUTTON_COLOR_ONE}
-                  placeholder={translate("FIELDS.EVENT_DESC", LangApp)}
-                  autoCapitalize="none"
-                  multiline={true}
-                  numberOfLines={4}
-                  {...descEvent}
-                />
-                <View style={{ marginTop: 10 }}>
-                  <Text style={styles.textPlaceholder}>
-                    {translate("EVENT.CHOICE_DATE", LangApp)}
-                  </Text>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      marginTop: 5
-                    }}
-                  >
-                    <View style={{ marginRight: 20 }}>
-                      <DatePicker
-                        date={AddInfoEvent.startDate}
-                        mode="datetime"
-                        placeholder={translate(
-                          "FIELDS.EVENT_DATE_START",
-                          LangApp
-                        )}
-                        minDate={new Date()}
-                        confirmBtnText={translate("ALERT.CONFIRM", LangApp)}
-                        cancelBtnText={translate("ALERT.CANCEL", LangApp)}
-                        is24Hour={true}
-                        style={{
-                          width: 140,
-                          borderWidth: 1,
-                          borderColor: "#EDF0F2",
-                          borderRadius: 6
-                        }}
-                        customStyles={{
-                          dateIcon: {
-                            position: "absolute",
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0,
-                            height: 0,
-                            width: 0
-                          },
-                          dateInput: {
-                            marginLeft: 36
-                          },
-                          dateInput: {
-                            borderWidth: 0,
-                            borderBottomWidth: 0.5,
-                            borderColor: BUTTON_COLOR_ONE
-                          }
-                        }}
-                        onDateChange={date => {
-                          setAddInfoEvent({ ...AddInfoEvent, startDate: date });
-                        }}
-                      />
-                    </View>
+                ]}
+                placeholderTextColor={BUTTON_COLOR_ONE}
+                placeholder={translate("FIELDS.EVENT_DESC", LangApp)}
+                autoCapitalize="none"
+                multiline={true}
+                numberOfLines={4}
+                {...descEvent}
+              />
+              <View style={{ marginTop: 10 }}>
+                <Text style={styles.textPlaceholder}>
+                  {translate("EVENT.CHOICE_DATE", LangApp)}
+                </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    marginTop: 5
+                  }}
+                >
+                  <View style={{ marginRight: 20 }}>
+                    <DatePicker
+                      date={AddInfoEvent.startDate}
+                      mode="datetime"
+                      placeholder={translate(
+                        "FIELDS.EVENT_DATE_START",
+                        LangApp
+                      )}
+                      minDate={new Date()}
+                      confirmBtnText={translate("ALERT.CONFIRM", LangApp)}
+                      cancelBtnText={translate("ALERT.CANCEL", LangApp)}
+                      is24Hour={true}
+                      style={{
+                        width: 140,
+                        borderWidth: 1,
+                        borderColor: "#EDF0F2",
+                        borderRadius: 6
+                      }}
+                      customStyles={{
+                        dateIcon: {
+                          position: "absolute",
+                          left: 0,
+                          top: 4,
+                          marginLeft: 0,
+                          height: 0,
+                          width: 0
+                        },
+                        dateInput: {
+                          marginLeft: 36
+                        },
+                        dateInput: {
+                          borderWidth: 0,
+                          borderBottomWidth: 0.5,
+                          borderColor: BUTTON_COLOR_ONE
+                        }
+                      }}
+                      onDateChange={date => {
+                        setAddInfoEvent({ ...AddInfoEvent, startDate: date });
+                      }}
+                    />
+                  </View>
 
-                    <View>
-                      <DatePicker
-                        date={AddInfoEvent.endDate}
-                        mode="datetime"
-                        placeholder={translate(
-                          "FIELDS.EVENT_DATE_END",
-                          LangApp
-                        )}
-                        minDate={AddInfoEvent.startDate}
-                        confirmBtnText={translate("ALERT.CONFIRM", LangApp)}
-                        cancelBtnText={translate("ALERT.CANCEL", LangApp)}
-                        is24Hour={true}
-                        style={{
-                          width: 140,
-                          borderWidth: 1,
-                          borderColor: "#EDF0F2",
-                          borderRadius: 6
-                        }}
-                        customStyles={{
-                          dateIcon: {
-                            position: "absolute",
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0,
-                            height: 0,
-                            width: 0
-                          },
-                          dateInput: {
-                            marginLeft: 36
-                          },
-                          dateInput: {
-                            borderWidth: 0,
-                            borderBottomWidth: 0.5,
-                            borderColor: BUTTON_COLOR_ONE
-                          }
-                        }}
-                        onDateChange={date => {
-                          setAddInfoEvent({ ...AddInfoEvent, endDate: date });
-                        }}
-                      />
-                    </View>
+                  <View>
+                    <DatePicker
+                      date={AddInfoEvent.endDate}
+                      mode="datetime"
+                      placeholder={translate("FIELDS.EVENT_DATE_END", LangApp)}
+                      minDate={AddInfoEvent.startDate}
+                      confirmBtnText={translate("ALERT.CONFIRM", LangApp)}
+                      cancelBtnText={translate("ALERT.CANCEL", LangApp)}
+                      is24Hour={true}
+                      style={{
+                        width: 140,
+                        borderWidth: 1,
+                        borderColor: "#EDF0F2",
+                        borderRadius: 6
+                      }}
+                      customStyles={{
+                        dateIcon: {
+                          position: "absolute",
+                          left: 0,
+                          top: 4,
+                          marginLeft: 0,
+                          height: 0,
+                          width: 0
+                        },
+                        dateInput: {
+                          marginLeft: 36
+                        },
+                        dateInput: {
+                          borderWidth: 0,
+                          borderBottomWidth: 0.5,
+                          borderColor: BUTTON_COLOR_ONE
+                        }
+                      }}
+                      onDateChange={date => {
+                        setAddInfoEvent({ ...AddInfoEvent, endDate: date });
+                      }}
+                    />
                   </View>
                 </View>
-                <TextInput
-                  style={styles.TextInput}
-                  placeholderTextColor={BUTTON_COLOR_ONE}
-                  placeholder={translate("FIELDS.ADDRESS", LangApp)}
-                  dataDetectorTypes="address"
-                  {...address}
-                />
-                <TextInput
-                  style={styles.TextInput}
-                  placeholderTextColor={BUTTON_COLOR_ONE}
-                  placeholder={translate("FIELDS.ZIP_CODE", LangApp)}
-                  keyboardType="numeric"
-                  autoCorrect={false}
-                  maxLength={5}
-                  {...zip_code}
-                />
-                <Button
-                  onPress={() => {
-                    addEventFunc({
-                      ...AddInfoEvent,
-                      description: descEvent.value,
-                      name: nameEvent.value,
-                      uuid: infoUser.uuid,
-                      token: infoUser.token,
-                      address: address.value,
-                      zip_code: zip_code.value
-                    });
-                  }}
-                  buttonStyle={styles.Button}
-                  title={translate("ALERT.ADD", LangApp)}
-                />
               </View>
-            </ScrollView>
-          </Container>
-        </>
+              <TextInput
+                style={styles.TextInput}
+                placeholderTextColor={BUTTON_COLOR_ONE}
+                placeholder={translate("FIELDS.ADDRESS", LangApp)}
+                dataDetectorTypes="address"
+                {...address}
+              />
+              <TextInput
+                style={styles.TextInput}
+                placeholderTextColor={BUTTON_COLOR_ONE}
+                placeholder={translate("FIELDS.ZIP_CODE", LangApp)}
+                keyboardType="numeric"
+                autoCorrect={false}
+                maxLength={5}
+                {...zip_code}
+              />
+              <Button
+                onPress={() => {
+                  addEventFunc({
+                    ...AddInfoEvent,
+                    description: descEvent.value,
+                    name: nameEvent.value,
+                    uuid: infoUser.uuid,
+                    token: infoUser.token,
+                    address: address.value,
+                    zip_code: zip_code.value
+                  });
+                }}
+                buttonStyle={styles.Button}
+                title={translate("ALERT.ADD", LangApp)}
+              />
+            </View>
+          </ScrollView>
+        </Container>
       </Modal>
     );
   };
