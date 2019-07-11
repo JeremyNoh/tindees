@@ -51,10 +51,10 @@
     "ZIP_CODE": "Code postal",
     "ORIGIN": "Pays d'origine",
     "CATEGORY": "Choisi ma Categorie",
-    "EVENT_NAME": "nom de l'evenement",
+    "EVENT_NAME": "Nom de l'evenement",
     "EVENT_DESC": "Description",
     "EVENT_DATE_START": "Debut de l'event",
-    "EVENT_DATE_END": "Debut de l'event"
+    "EVENT_DATE_END": "Fin de l'event"
   },
   "MAJ": "Mettre à Jour",
   "ERROR": {

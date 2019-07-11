@@ -1,67 +1,67 @@
 {
-  "NOT_DEFINE": " Texte non traduit",
-  "APP_LANGUE": "App en français",
+  "NOT_DEFINE": " Untranslated text",
+  "APP_LANGUE": "App en English",
   "TITLE": "Tindees",
-  "DESCRIPTION": "Partage sur des sujets communs",
+  "DESCRIPTION": "Sharing on common topics",
   "AUTH": {
-    "CONNECTION": "Se connecter",
-    "REGISTER": "S'inscrire",
-    "REGISTER_SUCCESS_TITLE": "Inscription réussie",
-    "REGISTER_SUCCESS_DESC": "Je t'invite à te connecter",
-    "CONNECT": "Se connecter",
-    "REGISTER_ACTION": "S'enregistrer"
+    "CONNECTION": "To log in",
+    "REGISTER": "Register",
+    "REGISTER_SUCCESS_TITLE": "Successful registration",
+    "REGISTER_SUCCESS_DESC": "I invite you to connect",
+    "CONNECT": "To log in",
+    "REGISTER_ACTION": "Register"
   },
   "HOME": {
-    "TITLE": "Page D'accueil",
-    "NO_FILTER_TITLE": "Filtre non Disponible 😞",
-    "NO_FILTER_DESC": "Cette Fonctionnalité n'est pas encore développer,  Stay Tuned pour la nouvelle mise à jour",
-    "ALL_EVENT": "Tous les Events",
-    "MY_EVENT": "Mes Events"
+    "TITLE": "Home",
+    "NO_FILTER_TITLE": "Filter not available 😞",
+    "NO_FILTER_DESC": "This feature is not yet developed, stay tuned for the new update",
+    "ALL_EVENT": "All Events",
+    "MY_EVENT": "My Events"
   },
   "EVENT": {
     "TITLE": "Tindees",
-    "EVENT_ADDED_TITLE": "Event Ajouté",
-    "EVENT_ADDED_DESC": "Des participants s'inscriront très bientôt",
-    "CLOSE": "Fermer",
-    "CREATE": "Créer un Event",
-    "CHOICE_DATE": "Choisi le debut et la fin de l'event :",
-    "NO_EVENT": "Pas d'event Refresh ou reviens plus tard",
-    "DATE_EVENT": "Date de L'event :",
-    "CATEGORY": "Catégorie",
-    "UNSUBSCRIBE_EVENT": "Se desinscrire",
-    "SUBSCRIBE_EVENT": "Je Participe"
+    "EVENT_ADDED_TITLE": "Event Added",
+    "EVENT_ADDED_DESC": "Participants will register very soon",
+    "CLOSE": "To close",
+    "CREATE": "Create an Event",
+    "CHOICE_DATE": "Choose the beginning and the end of the event:",
+    "NO_EVENT": "No event refresh or come back later",
+    "DATE_EVENT": "Date of the event:",
+    "CATEGORY": "Category",
+    "UNSUBSCRIBE_EVENT": "To unsubscribe",
+    "SUBSCRIBE_EVENT": "I participate"
   },
   "USER": {},
   "PROFIL": {
-    "NAME": "Profile",
-    "MAJ_INFO": "Tes infos ont été mis à jour",
-    "ACCEPT_PERMISSION": "Désolé, nous avons besoin d'autorisations pour les pellicules pour que cela fonctionne!"
+    "NAME": "Profil",
+    "MAJ_INFO": "Your info has been updated",
+    "ACCEPT_PERMISSION": "Sorry, we need permissions for dandruff for this to work!"
   },
   "ALERT": {
-    "SUCCESS": "Bravo 🤗",
-    "CONFIRM": "Confirmer",
-    "CANCEL": "Annuler",
-    "ADD": "Ajouter"
+    "SUCCESS": "Congrats 🤗",
+    "CONFIRM": "To confirm",
+    "CANCEL": "Cancel",
+    "ADD": "Add"
   },
   "FIELDS": {
     "EMAIL": "Email",
-    "PASSWORD": "Mot de passe",
-    "LASTNAME": "Nom",
-    "FIRSTNAME": "Prénom",
-    "ADDRESS": "Adresse",
-    "ZIP_CODE": "Code postal",
-    "ORIGIN": "Pays d'origine",
-    "CATEGORY": "Choisi ma Categorie",
-    "EVENT_NAME": "nom de l'evenement",
+    "PASSWORD": "Password",
+    "LASTNAME": "Lastname",
+    "FIRSTNAME": "First name",
+    "ADDRESS": "Address",
+    "ZIP_CODE": "Zip Code",
+    "ORIGIN": "Native country",
+    "CATEGORY": "Choose my category",
+    "EVENT_NAME": "Name of the event",
     "EVENT_DESC": "Description",
-    "EVENT_DATE_START": "Debut de l'event",
-    "EVENT_DATE_END": "Debut de l'event"
+    "EVENT_DATE_START": "Beginning of the event",
+    "EVENT_DATE_END": "End of the event"
   },
-  "MAJ": "Mettre à Jour",
+  "MAJ": "Update",
   "ERROR": {
-    "RETRY": "Réessayez",
-    "FAIL": "Une erreur s'est produite 😥",
-    "INCOMPLETE_FIELDS_TITLE": "Champs Incomplet 😥",
-    "INCOMPLETE_FIELDS_DESC": "Veuillez remplir tout les champs"
+    "RETRY": "Retry",
+    "FAIL": "An error has occurred 😥",
+    "INCOMPLETE_FIELDS_TITLE": "Incomplete fields 😥",
+    "INCOMPLETE_FIELDS_DESC": "Please complete all fields"
   }
 }

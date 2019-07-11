@@ -1,5 +1,5 @@
 // SERVER ADRESS
-export const BASE_URL = "https://tindees.herokuapp.com";
+export const BASE_URL = "https://tiindees.herokuapp.com";
 
 // Routes
 export const REGISTER = "/api/auth/register";
