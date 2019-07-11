@@ -1,5 +1,5 @@
 // SERVER ADRESS
-export const BASE_URL = "https://tiindees.herokuapp.com";
+export const BASE_URL = "https://tindees.herokuapp.com";
 
 // Routes
 export const REGISTER = "/api/auth/register";
@@ -8,7 +8,5 @@ export const PROFIL = "/api/user/profil/";
 export const CATEGORY = "/api/category/";
 export const EVENT = "/api/event/";
 export const MY_EVENT = "myevent/";
-// Api For custom Avatar
-export const API_AVATAR = "https://api.adorable.io/avatars";
 
 export const API_IMG_BB = "https://api.imgbb.com/1/";

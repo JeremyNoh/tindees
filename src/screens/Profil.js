@@ -26,6 +26,7 @@ import { API_KEY_IMG_BB } from "../../api/const";
 import { API_IMG_BB } from "../../endpoint";
 import { country } from "../../assets/country/country";
 import { getAppLang, translate } from "../../locale/local";
+import { ChangeLangue } from "../components/ChangeLangue";
 
 function Profil({ navigation }) {
   const [infoUser, setInfoUser] = useState(undefined);
@@ -187,6 +188,7 @@ function Profil({ navigation }) {
             navigation.navigate("SignedOut"), AsyncStorage.clear();
           }
         }}
+        leftComponent={<ChangeLangue />}
       />
       <Container>
         <View style={{ paddingTop: 20 }}>

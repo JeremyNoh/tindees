@@ -18,11 +18,11 @@ export const ChangeLangue = () => {
   };
   AlertNotLangSupported = () => {
     Alert.alert(
-      "Langue non supporté",
-      "Cette langue n'est pas encore supporté 😥",
+      "Langue non supportée",
+      "Cette langue n'est pas encore supportée 😥",
       [
         {
-          text: "Choisir une Nouvelle Langue",
+          text: "Choisir une nouvelle langue",
           onPress: () => {
             alertChangeLangue();
           }
@@ -39,8 +39,8 @@ export const ChangeLangue = () => {
   // View for change the Langue
   alertChangeLangue = () => {
     Alert.alert(
-      "Choisi la langue de l'appli",
-      "fais toi plaisir ",
+      "Pick a Language for your App",
+      "",
       [
         {
           text: "Francais",
