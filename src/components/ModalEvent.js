@@ -24,6 +24,7 @@ import {
 
 import Container from "./Container";
 import { translate } from "../../locale/local";
+import { Loading } from "../components/Loading";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -37,6 +38,7 @@ export const ModalEvent = ({
   refreshing,
   LangApp
 }) => {
+  const [ImgLoading, setImgLoading] = useState(false);
   const _joinEvent = () => {
     joinEvent({
       event_id: event.id,
@@ -88,20 +90,9 @@ export const ModalEvent = ({
       });
   };
 
-  // event.description =
-  //   "Illud tamen clausos vehementer angebat quod captis navigiis, quae frumenta vehebant per flumen, Isauri quidem alimentorum copiis adfluebant, ipsi vero solitarum ";
-
-  return (
-    <Modal
-      animationType="slide"
-      transparent={false}
-      visible={true}
-      onRequestClose={() => {}}
-    >
-      <ImageBackground
-        source={require("../../assets/wallpa.png")}
-        style={{ width: "100%", height: "100%" }}
-      >
+  const content = () => {
+    return (
+      <>
         <View style={{ paddingLeft: 50 }}>
           <TouchableOpacity
             onPress={() => {
@@ -219,6 +210,24 @@ export const ModalEvent = ({
             </View>
           </ScrollView>
         </Container>
+      </>
+    );
+  };
+  return (
+    <Modal
+      animationType="slide"
+      transparent={false}
+      visible={true}
+      onRequestClose={() => {}}
+    >
+      <ImageBackground
+        source={require("../../assets/wallpa.png")}
+        style={{ width: "100%", height: "100%" }}
+        onLoad={() => {
+          setImgLoading(true);
+        }}
+      >
+        {ImgLoading ? content() : <Loading />}
       </ImageBackground>
     </Modal>
   );

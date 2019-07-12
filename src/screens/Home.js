@@ -160,6 +160,8 @@ function Home({ navigation }) {
         setRefreshing(false);
       })
       .catch(err => {
+        console.log("err");
+
         setAllEvent(mock);
         setRefreshing(false);
       });
