@@ -188,7 +188,7 @@ function Profil({ navigation }) {
             navigation.navigate("SignedOut"), AsyncStorage.clear();
           }
         }}
-        leftComponent={<ChangeLangue />}
+        leftComponent={<ChangeLangue LangApp={LangApp} />}
       />
       <Container>
         <View style={{ paddingTop: 20 }}>

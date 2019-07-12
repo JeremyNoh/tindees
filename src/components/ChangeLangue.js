@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import { StyleSheet, Image, Alert } from "react-native";
 import { BUTTON_COLOR_ONE } from "../../utils/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { setAppLang } from "../../locale/local";
+import { setAppLang, translate } from "../../locale/local";
 
 import { Updates, Expo } from "expo";
 
-export const ChangeLangue = () => {
+export const ChangeLangue = ({ LangApp }) => {
   const setLang = async lang => {
     let result = await setAppLang(lang);
     if (result) {
@@ -18,11 +18,11 @@ export const ChangeLangue = () => {
   };
   AlertNotLangSupported = () => {
     Alert.alert(
-      "Langue non supportée",
-      "Cette langue n'est pas encore supportée 😥",
+      translate("ALERT.LANGUE_NO_AVAILABLE_TITLE", LangApp),
+      translate("ALERT.LANGUE_NO_AVAILABLE_DESC", LangApp),
       [
         {
-          text: "Choisir une nouvelle langue",
+          text: `${translate("ALERT.LANGUE_CHOICE_LANGUE", LangApp)}`,
           onPress: () => {
             alertChangeLangue();
           }
@@ -39,29 +39,29 @@ export const ChangeLangue = () => {
   // View for change the Langue
   alertChangeLangue = () => {
     Alert.alert(
-      "Pick a Language for your App",
+      translate("ALERT.LANGUE_PICK", LangApp),
       "",
       [
         {
-          text: "Francais",
+          text: `${translate("ALERT.FRENCH", LangApp)}`,
           onPress: () => {
             setLang("fr");
           }
         },
         {
-          text: "Anglais",
+          text: `${translate("ALERT.ENGLISH", LangApp)}`,
           onPress: () => {
             setLang("en");
           }
         },
         {
-          text: "Espagnol",
+          text: `${translate("ALERT.SPANISH", LangApp)}`,
           onPress: () => {
             setLang("es");
           }
         },
         {
-          text: "Annuler",
+          text: `${translate("ALERT.CANCEL", LangApp)}`,
           onPress: () => {}
         }
       ],

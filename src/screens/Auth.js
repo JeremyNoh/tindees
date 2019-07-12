@@ -292,7 +292,7 @@ function Auth({ navigation }) {
           alignItems: "center"
         }}
       >
-        <ChangeLangue />
+        <ChangeLangue LangApp={LangApp} />
       </View>
       <View style={{ position: "absolute", top: 70, alignItems: "center" }}>
         <Title title="Tindees" style={{ color: BUTTON_COLOR_ONE }} />

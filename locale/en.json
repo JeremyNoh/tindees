@@ -41,7 +41,14 @@
     "SUCCESS": "Congrats 🤗",
     "CONFIRM": "To confirm",
     "CANCEL": "Cancel",
-    "ADD": "Add"
+    "ADD": "Add",
+    "LANGUE_NO_AVAILABLE_TITLE": "Unsupported language",
+    "LANGUE_NO_AVAILABLE_DESC": "This language is not supported yet 😥",
+    "LANGUE_CHOICE_LANGUE": "Choose a new language",
+    "LANGUE_PICK": "Pick a Language for your App",
+    "FRENCH": "French",
+    "ENGLISH": "English",
+    "SPANISH": "Spanish"
   },
   "FIELDS": {
     "EMAIL": "Email",
