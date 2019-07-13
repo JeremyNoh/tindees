@@ -1,10 +1,10 @@
-![Tindees](assets/TindeesMin.png "this is the name Of the Project")
+![Tindees](https://github.com/JeremyNoh/tindees-app/raw/master/assets/tindeesMin.png "this is the name Of the Project")
 
 ## Présentation Tindees
 
 Le but de ce projet est de créer un Application Mobile qui a pour objectif de changer le regards que nous portons sur les réfugiés en proposant des Events | Activités pour partager ensemble au sein d'un sujet commun
 
-Ce Repo est le Front si vous voulez visualiser le Back merci de vous diriger : [içi]([https://github.com/aawfrancois/tindees-api])
+Ce Repo est le Front si vous voulez visualiser le Back merci de vous diriger : [içi](https://github.com/aawfrancois/tindees-api)
 
 ## Fonctionnalités
 
