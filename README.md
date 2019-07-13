@@ -40,7 +40,7 @@ Ce projet est créer en React Native pour l'installer / le lancer merci de suivr
 
 ### Create a file Private const.js
 
-Ce fichier contiendra vos accès privée aux services : [ImgBB](<[https://api.imgbb.com/](https://api.imgbb.com/)>)
+Ce fichier contiendra vos accès privée aux services : [ImgBB](https://api.imgbb.com/)
 
 il ira donc dans le dossier _api/_ :
 
@@ -67,9 +67,9 @@ ENJOY 🙂
 
 ## Team
 
-- [Antoine François](<[https://github.com/aawfrancois/](https://github.com/aawfrancois/)>)
-- [Abdoulaye Diallo](<[https://github.com/DiallAbdoulaye](https://github.com/DiallAbdoulaye)>)
-- [Flavien Médina](<[https://github.com/FlavienMedina](https://github.com/FlavienMedina)>)
+- [Antoine François](https://github.com/aawfrancois/)
+- [Abdoulaye Diallo](https://github.com/DiallAbdoulaye)
+- [Flavien Médina](https://github.com/FlavienMedina)
 - [Jeremy Noh](https://github.com/JeremyNoh)
 
 Merci à vous
