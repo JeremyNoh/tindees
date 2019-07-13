@@ -355,7 +355,6 @@ const styles = StyleSheet.create({
 });
 
 Auth.navigationOptions = () => ({
-  title: "Partage sur des sujets Communs",
   headerTintColor: TEXT_HEADER,
   headerStyle: {
     backgroundColor: BACKGROUND_HEADER
